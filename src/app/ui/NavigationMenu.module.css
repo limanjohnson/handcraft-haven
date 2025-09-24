@@ -1,0 +1,48 @@
+.logo {
+    font-family: 'Imperial Script', cursive;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.navigation-menu-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items:center;
+    justify-content: space-between;
+    padding:1em;
+    background-color: #EAE2B7;
+}
+
+.menu-list {
+    list-style:none;
+    display:flex;
+    justify-self:center;
+}
+
+.menu-list li {
+    margin:0 2em;
+}
+
+.right-side-menu {
+    justify-self: end;
+}
+
+.login-button {
+    padding:5px 10px;
+    border: 2px solid #003049;
+    border-radius:5px;
+    background-color:#fff;
+    color:#003049;
+    transition-duration:.2s;
+}
+
+.login-button:hover {
+    background-color:#003049;
+    color:#fff;
+}
+
+.login-button:focus {
+    outline:none;
+    background-color:#003049;
+    color:#fff;
+}

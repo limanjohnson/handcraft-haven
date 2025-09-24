@@ -1,0 +1,33 @@
+{
+  "name": "handcraft-haven-team04",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@heroui/button": "^2.2.26",
+    "@heroui/link": "^2.2.22",
+    "@heroui/navbar": "^2.2.24",
+    "@heroui/react": "^2.8.4",
+    "@tailwindcss/postcss": "^4.1.13",
+    "next": "15.5.3",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.3",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5"
+  }
+}
