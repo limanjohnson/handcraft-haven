@@ -3,21 +3,10 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import styles from './NewProductsForm.module.css';
 
 export default function NewProductsForm() {
-    const [selectedFile, setSelectedFile] = useState(null);
-
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0] ?? null;
-        setSelectedFile(file);
-    };
-
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        // Handle form submission logic here
-    };
 
     return (
         <div>
-            <form className={styles.formContainer} onSubmit={handleSubmit}>
+            <form className={styles.formContainer}>
                 <h2>Add New Product</h2>
                 <div className={styles.section1}>
                     <h3 className={styles.sectionHeading}>General Information</h3>
@@ -43,7 +32,7 @@ export default function NewProductsForm() {
                 </div>
                 <div className={styles.section3}>
                     <label htmlFor="image">Upload Image</label>
-                    <input type="file" id="image" name="image" accept="image/*" onChange={handleFileChange} />
+                    <input type="file" id="image" name="image" accept="image/*" />
                 </div>
             </form>
         </div>
