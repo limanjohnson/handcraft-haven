@@ -5,6 +5,16 @@ import styles from './NewProductsForm.module.css';
 export default function NewProductsForm() {
     const [selectedFile, setSelectedFile] = useState(null);
 
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0] ?? null;
+        setSelectedFile(file);
+    };
+
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        // Handle form submission logic here
+    };
+
     return (
         <div>
             <form className={styles.formContainer}>
