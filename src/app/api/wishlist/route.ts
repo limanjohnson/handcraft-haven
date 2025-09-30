@@ -33,7 +33,7 @@ export async function GET(request: Request) {
     const result = await pool.query(query, [userId]);
 
     return Response.json(result.rows);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching wishlist:', error);
     return Response.json({ error: 'Internal Server Error' }, { status: 500 });
   }
