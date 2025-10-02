@@ -1,8 +1,7 @@
 "use client";
 import Link from "next/link";
-import styles from "@/app/ui/NavigationMenu.module.css";
 
-export default function NavigationMenu() {
+export default function NavigationMenu({ className = "" }: { className?: string }) {
   const menuItems = [
     { label: "Home", href: "/" },
     { label: "Products", href: "/products" },
@@ -11,17 +10,12 @@ export default function NavigationMenu() {
   ];
 
   return (
-    <nav className={styles["navigation-menu-container"]}>
-      <ul className={styles["menu-list"]}>
+      <ul className={`flex list-none ${className}`}>
         {menuItems.map((item) => (
-          <li key={item.href}>
-            <Link href={item.href}>{item.label}</Link>
+          <li key={item.href} className="mx-4 md:mx-6">
+            <Link href={item.href} className="p-4">{item.label}</Link>
           </li>
         ))}
       </ul>
-      <div className={styles["right-side-menu"]}>
-        <button className={styles["login-button"]}>Login</button>
-      </div>
-    </nav>
   );
 }
