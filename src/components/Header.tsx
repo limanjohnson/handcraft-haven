@@ -13,7 +13,7 @@ export default function Header() {
           <div className="flex items-center justify-between p-4">
 
             {/* Logo + Name */}
-            <Link href="/" className="flex items-center gap-2 bg-white">
+            <Link href="/" className="flex items-center gap-2 bg-white p-2 rounded-md">
               <Image
                 src="/logo.png"
                 alt="Handcrafted Haven Logo"
