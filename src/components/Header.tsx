@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -9,9 +10,8 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="bg-primary shadow-md text-neutral">
-      <div className="max-w-7xl mx-auto flex flex-wrap md:flex-nowrap justify-between items-center p-4">
-        
+    <header style={{ backgroundColor: '#EAE2B7' }} className="shadow-md text-neutral">
+      <div className="max-w-[1400px] mx-auto flex justify-between items-center p-4 px-8">
         {/* Logo + Name */}
         <Link href="/" className="flex items-center space-x-3">
           <Image
@@ -24,23 +24,23 @@ export default function Header() {
           <span className="text-2xl font-bold">Handcrafted Haven</span>
         </Link>
 
-        {/* Hamburguer Button (mobile) */}
+        {/* Desktop Menu with Login Button */}
+        <nav className="hidden md:flex md:items-center md:gap-6 flex-1 justify-end">
+          <NavigationMenu />
+        </nav>
+
+        {/* Hamburger Button (mobile) */}
         <button
-          className="md:hidden text-neutral ml-auto"
+          className="md:hidden text-neutral"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
-
-        {/* Desktop Menu  */}
-        <nav className="hidden md:flex md:items-center md:gap-6">
-          <NavigationMenu />
-        </nav>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-primary border-t border-highlight">
+        <div style={{ backgroundColor: '#EAE2B7' }} className="md:hidden border-t border-highlight">
           <NavigationMenu />
         </div>
       )}
