@@ -1,85 +1,195 @@
+/* UPDATED: Navigation Menu CSS with increased spacing and link styles */
+
 /* Logo */
 .logo {
-    font-family: 'Imperial Script', cursive;
-    font-size: 1.5em;
-    color: #333;
+  font-family: 'Imperial Script', cursive;
+  font-size: 1.5em;
+  color: #333;
 }
 
 /* Menu */
 .navigation-menu-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1em;
-    background-color: #EAE2B7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 /* Links list */
 .menu-list {
-    list-style: none;
-    display: flex;
-    justify-self: center;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  gap: 4em; /* Increased spacing between nav links */
+  flex: 1;
+  justify-content: center;
 }
 
 .menu-list li {
-    margin: 0 2em;
+  margin: 0;
 }
 
-/* Login button area */
+.menu-list a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.menu-list a:hover {
+  color: #8B6F47;
+}
+
+/* Login button area - pushed to the right */
 .right-side-menu {
-    justify-self: end;
+  margin-left: auto;
 }
 
 /* Login button */
 .login-button {
-    padding: 5px 10px;
-    border: 2px solid #003049;
-    border-radius: 5px;
-    background-color: #fff;
-    color: #003049;
-    transition-duration: .2s;
-    cursor: pointer;
+  padding: 8px 20px;
+  border: 2px solid #003049;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #003049;
+  transition-duration: .2s;
+  cursor: pointer;
+  font-weight: 500;
 }
 
 .login-button:hover {
-    background-color: #003049;
-    color: #fff;
+  background-color: #003049;
+  color: #fff;
 }
 
 .login-button:focus {
-    outline: none;
-    background-color: #003049;
-    color: #fff;
+  outline: none;
+  background-color: #003049;
+  color: #fff;
 }
 
 /* ====================== */
 /* Responsividade (Mobile) */
 /* ====================== */
-
 @media (max-width: 768px) {
-    .navigation-menu-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 1em;
-        grid-template-columns: unset; /* remove grid no mobile */
-    }
+  .navigation-menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+  }
 
-    .menu-list {
-        flex-direction: column;
-        gap: 1em;
-        justify-self: center;
-    }
+  .menu-list {
+    flex-direction: column;
+    gap: 1em;
+    text-align: center;
+    flex: unset;
+  }
 
-    .menu-list li {
-        margin: 0; 
-    }
+  .menu-list li {
+    margin: 0;
+  }
 
-    .right-side-menu {
-        margin-top: 1em;
-        justify-self: center;
-    }
+  .right-side-menu {
+    margin-top: 1em;
+    margin-left: 0;
+  }
+}/* UPDATED: Navigation Menu CSS with increased spacing and link styles */
+
+/* Logo */
+.logo {
+  font-family: 'Imperial Script', cursive;
+  font-size: 1.5em;
+  color: #333;
+}
+
+/* Menu */
+.navigation-menu-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 2rem;
+}
+
+/* Links list */
+.menu-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  gap: 3em; /* Increased spacing between nav links */
+}
+
+.menu-list li {
+  margin: 0;
+}
+
+.menu-list a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.menu-list a:hover {
+  color: #8B6F47;
+}
+
+/* Login button area */
+.right-side-menu {
+  margin-left: auto;
+}
+
+/* Login button */
+.login-button {
+  padding: 8px 20px;
+  border: 2px solid #003049;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #003049;
+  transition-duration: .2s;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.login-button:hover {
+  background-color: #003049;
+  color: #fff;
+}
+
+.login-button:focus {
+  outline: none;
+  background-color: #003049;
+  color: #fff;
+}
+
+/* ====================== */
+/* Responsividade (Mobile) */
+/* ====================== */
+@media (max-width: 768px) {
+  .navigation-menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+  }
+
+  .menu-list {
+    flex-direction: column;
+    gap: 1em;
+    text-align: center;
+  }
+
+  .menu-list li {
+    margin: 0;
+  }
+
+  .right-side-menu {
+    margin-top: 1em;
+    margin-left: 0;
+  }
 }
