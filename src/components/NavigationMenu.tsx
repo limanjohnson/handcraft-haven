@@ -12,7 +12,7 @@ export default function NavigationMenu({ className = "" }: { className?: string 
   return (
       <ul className={`flex list-none ${className}`}>
         {menuItems.map((item) => (
-          <li key={item.href} className="mx-4 md:mx-6">
+          <li key={item.href} className="mx-4 md:mx-6 dark:text-gray-800">
             <Link href={item.href} className="p-4">{item.label}</Link>
           </li>
         ))}

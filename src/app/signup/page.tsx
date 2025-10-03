@@ -11,8 +11,8 @@ const imperialScript = Imperial_Script({
 export default function LoginForm() {
     // const searchParams = useSearchParams();
     // const [errorMessage, formAction, isPending] = useActionState(
-        //authenticate,
-        // undefined,
+    //authenticate,
+    // undefined,
     // );
 
     return(
@@ -56,9 +56,6 @@ export default function LoginForm() {
                             minLength={6}
                         />
                     </div>
-                </div>
-                <div>
-
                 </div>
             </div>
         </form>

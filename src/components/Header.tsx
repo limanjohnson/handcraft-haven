@@ -22,7 +22,7 @@ export default function Header() {
                 height={50}
                 priority
               />
-              <span className="text-2xl font-bold">Handcrafted Haven</span>
+              <span className="text-2xl font-bold dark:text-gray-800">Handcrafted Haven</span>
             </Link>
 
             {/* Hamburguer Button (mobile) */}
