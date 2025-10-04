@@ -10,20 +10,20 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="bg-[#EAE2B7]">
-          <div className="flex items-center justify-between p-4">
+    <header className="bg-[#EAE2B7]" suppressHydrationWarning>
+      <div className="flex items-center justify-between p-4">
 
-            {/* Logo + Name */}
-            <Link href="/" className="flex items-center gap-2 bg-white p-2 rounded-md">
-              <Image
-                src="/logo.png"
-                alt="Handcrafted Haven Logo"
-                width={50}
-                height={50}
-                priority
-              />
-              <span className="text-2xl font-bold dark:text-gray-800">Handcrafted Haven</span>
-            </Link>
+        {/* Logo + Name */}
+        <Link href="/" className="flex items-center gap-2 bg-white p-2 rounded-md">
+          <Image
+            src="/logo.png"
+            alt="Handcrafted Haven Logo"
+            width={50}
+            height={50}
+            priority
+          />
+          <span className="text-2xl font-bold dark:text-gray-800">Handcrafted Haven</span>
+        </Link>
 
             {/* Hamburguer Button (mobile) */}
             <button

@@ -1,16 +1,17 @@
-
 import styles from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
+import { getFeaturedProducts, getAllArtisans } from "@/lib/repos";
 
-function Main({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <main className={className}>{children}</main>;
-}
+export default async function Home() {
+  const [products, artisans] = await Promise.all([
+    getFeaturedProducts(6),
+    getAllArtisans(6),
+  ]);
 
-export default function Home() {
   return (
     <div className={styles.page}>
-      <Main className={styles.main}>
+      <main className={styles.main}>
         {/* Hero Section - Full Width */}
         <section className={styles.hero}>
           {/* Background Image */}
@@ -46,7 +47,53 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </Main>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Featured products</h2>
+            <Link href="/products" className={styles.sectionLink}>Browse products</Link>
+          </div>
+          <div className={styles.grid}>
+            {products.map((p: any) => (
+              <div key={p.id} className={styles.card}>
+                <div className={styles.cardImage}>
+                  <Image src="/file.svg" alt={p.title} width={320} height={200} />
+                </div>
+                <div className={styles.cardBody}>
+                  <h3 className={styles.cardTitle}>{p.title}</h3>
+                  <div className={styles.cardMeta}>
+                    <span className={styles.price}>${Number(p.price).toFixed(2)}</span>
+                    <Link href="/products" className={styles.cardAction}>View</Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Meet our artisans</h2>
+            <Link href="/artisans" className={styles.sectionLink}>Explore artisans</Link>
+          </div>
+          <div className={styles.grid}>
+            {artisans.map((a: any) => (
+              <div key={a.id} className={styles.card}>
+                <div className={styles.cardImage}>
+                  <Image src="/globe.svg" alt={`${a.name} avatar`} width={160} height={160} />
+                </div>
+                <div className={styles.cardBody}>
+                  <h3 className={styles.cardTitle}>{a.name}</h3>
+                  <div className={styles.cardMeta}>
+                    <span className={styles.muted}>{a.bio ? a.bio.substring(0, 50) + '...' : "Artisan"}</span>
+                    <Link href="/artisans" className={styles.cardAction}>Profile</Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
