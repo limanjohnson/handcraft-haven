@@ -11,7 +11,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer style={{ backgroundColor: '#5C4A3A', color: '#fff' }} className="mt-10">
+    <footer style={{ backgroundColor: '#5C4A3A', color: '#fff' }} className="mt-10" suppressHydrationWarning>
       <div className="max-w-7xl mx-auto py-8 px-6 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-sm font-light mb-4 md:mb-0 md:ml-20" style={{ color: '#D4C5A9' }}>
           © {new Date().getFullYear()} Handcrafted Haven. All rights reserved.

@@ -17,7 +17,7 @@ export async function GET(req: Request) {
   }
 
   const sql = `
-    select id, title, price, image_url, category, created_at
+    select id, title, price, created_at
     from products
     ${where.length ? `where ${where.join(" and ")}` : ""}
     order by created_at desc
