@@ -4,17 +4,17 @@ import { Youtube, X, Instagram, Facebook } from "lucide-react";
 
 export default function Footer() {
   const socialLinks = [
-    { href: "https://youtube.com", icon: <Youtube size={24} />, color: "#FF0000" },
-    { href: "https://x.com", icon: <X size={24} />, color: "#000000" },
-    { href: "https://instagram.com", icon: <Instagram size={24} />, color: "#E1306C" },
-    { href: "https://facebook.com", icon: <Facebook size={24} />, color: "#1877F2" },
+    { href: "https://youtube.com", icon: <Youtube size={24} />, label: "YouTube" },
+    { href: "https://x.com", icon: <X size={24} />, label: "X (Twitter)" },
+    { href: "https://instagram.com", icon: <Instagram size={24} />, label: "Instagram" },
+    { href: "https://facebook.com", icon: <Facebook size={24} />, label: "Facebook" },
   ];
 
   return (
-    <footer style={{ backgroundColor: '#D4C5A9' }} className="text-neutral mt-10">
+    <footer style={{ backgroundColor: '#5C4A3A', color: '#fff' }} className="mt-10">
       <div className="max-w-7xl mx-auto py-8 px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-sm font-light mb-4 md:mb-0 md:ml-20">
-          © {new Date().getFullYear()} Handcrafted Haven.
+        <p className="text-sm font-light mb-4 md:mb-0 md:ml-20" style={{ color: '#D4C5A9' }}>
+          © {new Date().getFullYear()} Handcrafted Haven. All rights reserved.
         </p>
         <div className="flex space-x-6 md:mr-20">
           {socialLinks.map((link, idx) => (
@@ -24,7 +24,8 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="transition-all duration-300 hover:scale-110"
-              style={{ color: link.color }}
+              style={{ color: '#D4C5A9' }}
+              aria-label={link.label}
             >
               {link.icon}
             </a>
