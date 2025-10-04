@@ -1,6 +1,6 @@
-import Image from "next/image";
-import Link from "next/link";
 import styles from "./page.module.css";
+import Link from "next/link";
+import Image from "next/image";
 import { getFeaturedProducts, getAllArtisans } from "@/lib/repos";
 
 export default async function Home() {
@@ -12,7 +12,41 @@ export default async function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        {/* render your existing hero ... */}
+        {/* Hero Section - Full Width */}
+        <section className={styles.hero}>
+          {/* Background Image */}
+          <div className={styles.heroImageBackground}>
+            <Image
+              src="/hero-image.jpg"
+              alt="Handcrafted products"
+              fill
+              className={styles.heroBackgroundImg}
+              style={{ objectFit: 'cover' }}
+              priority
+            />
+            {/* Dark overlay for better text readability */}
+            <div className={styles.heroOverlay}></div>
+          </div>
+
+          {/* Content on top of image */}
+          <div className={styles.heroContent}>
+            <h1 className={styles.heroTitle}>
+              Discover Unique Handcrafted Treasures
+            </h1>
+            <p className={styles.heroSubtitle}>
+              Connect with talented artisans and find one-of-a-kind pieces that tell a story. 
+              From handmade jewelry to custom furniture, every item is crafted with passion.
+            </p>
+            <div className={styles.heroCtas}>
+              <Link href="/products" className={styles.ctaPrimary}>
+                <span>Explore Products</span>
+              </Link>
+              <Link href="/artisans" className={styles.ctaSecondary}>
+                <span>Meet Artisans</span>
+              </Link>
+            </div>
+          </div>
+        </section>
 
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
@@ -23,7 +57,7 @@ export default async function Home() {
             {products.map((p: any) => (
               <div key={p.id} className={styles.card}>
                 <div className={styles.cardImage}>
-                  <Image src={p.image_url ?? "/file.svg"} alt={p.title} width={320} height={200} />
+                  <Image src="/file.svg" alt={p.title} width={320} height={200} />
                 </div>
                 <div className={styles.cardBody}>
                   <h3 className={styles.cardTitle}>{p.title}</h3>
@@ -46,12 +80,12 @@ export default async function Home() {
             {artisans.map((a: any) => (
               <div key={a.id} className={styles.card}>
                 <div className={styles.cardImage}>
-                  <Image src={a.avatar_url ?? "/globe.svg"} alt={`${a.name} avatar`} width={160} height={160} />
+                  <Image src="/globe.svg" alt={`${a.name} avatar`} width={160} height={160} />
                 </div>
                 <div className={styles.cardBody}>
                   <h3 className={styles.cardTitle}>{a.name}</h3>
                   <div className={styles.cardMeta}>
-                    <span className={styles.muted}>{a.specialty ?? "Artisan"}</span>
+                    <span className={styles.muted}>{a.bio ? a.bio.substring(0, 50) + '...' : "Artisan"}</span>
                     <Link href="/artisans" className={styles.cardAction}>Profile</Link>
                   </div>
                 </div>
