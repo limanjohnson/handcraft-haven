@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import AddToCartButton from "@/components/AddToCartButton";
 
 // Define what a product looks like
 type Product = {
@@ -20,18 +21,18 @@ export default function ProductsPage() {
   // Function to fetch products from the API
   async function loadProducts() {
     setLoading(true);
-    
+
     try {
       // Call our API to get products
       const response = await fetch("/api/products");
       const data = await response.json();
-      
+
       // Save the products to state
       setProducts(data);
     } catch (error) {
       console.error("Error loading products:", error);
     }
-    
+
     setLoading(false);
   }
 
@@ -41,86 +42,59 @@ export default function ProductsPage() {
   }, []);
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
-      <h1 style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "2rem" }}>
-        Products
-      </h1>
+    <div className="p-8 max-w-6xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8 text-[#003049]">Products</h1>
 
-      {/* Show loading message */}
+      {/* Loading message */}
       {loading && (
-        <p style={{ textAlign: "center", fontSize: "1.2rem" }}>
-          Loading products...
-        </p>
+        <p className="text-center text-lg text-gray-600">Loading products...</p>
       )}
 
-      {/* Show message if no products found */}
+      {/* No products message */}
       {!loading && products.length === 0 && (
-        <p style={{ textAlign: "center", fontSize: "1.2rem" }}>
+        <p className="text-center text-lg text-gray-600">
           No products found.
         </p>
       )}
 
-      {/* Show products in a grid */}
+      {/* Products grid */}
       {!loading && products.length > 0 && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: "2rem",
-          }}
-        >
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
           {products.map((product) => (
             <div
               key={product.id}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-                padding: "1.5rem",
-                backgroundColor: "#fff",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-              }}
+              className="bg-white rounded-2xl shadow-md p-4 flex flex-col justify-between border border-gray-200 hover:shadow-lg transition"
             >
               {/* Product image placeholder */}
-              <div
-                style={{
-                  width: "100%",
-                  height: "200px",
-                  backgroundColor: "#f0f0f0",
-                  borderRadius: "8px",
-                  marginBottom: "1rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <span style={{ color: "#999" }}>No image</span>
+              <div className="w-full h-48 bg-[#Eae2b7] rounded-xl mb-4 flex items-center justify-center">
+                <span className="text-gray-500">No image</span>
               </div>
 
-              {/* Product title */}
-              <h2 style={{ fontSize: "1.25rem", fontWeight: "600", marginBottom: "0.5rem" }}>
-                {product.title}
-              </h2>
+              {/* Product info */}
+              <div>
+                <h2 className="text-lg font-semibold text-[#003049] mb-1">
+                  {product.title}
+                </h2>
+                <p className="text-2xl font-bold text-[#D62828] mb-3">
+                  ${Number(product.price).toFixed(2)}
+                </p>
 
-              {/* Product price */}
-              <p style={{ fontSize: "1.5rem", fontWeight: "700", color: "#8B6F47", marginBottom: "1rem" }}>
-                ${Number(product.price).toFixed(2)}
-              </p>
+                <div className="flex flex-col gap-2">
+                  <a
+                    href={`/products/${product.id}`}
+                    className="bg-[#003049] hover:bg-[#F77f00] text-white text-center py-2 px-4 rounded-xl transition"
+                  >
+                    View Details
+                  </a>
 
-              {/* View button */}
-              <a
-                href={`/products/${product.id}`}
-                style={{
-                  display: "inline-block",
-                  backgroundColor: "#8B6F47",
-                  color: "#fff",
-                  padding: "0.75rem 1.5rem",
-                  borderRadius: "6px",
-                  textDecoration: "none",
-                  fontWeight: "600",
-                }}
-              >
-                View Details
-              </a>
+                  {/* Botão de adicionar ao carrinho */}
+                  <AddToCartButton
+                    id={product.id}
+                    title={product.title}
+                    price={product.price}
+                  />
+                </div>
+              </div>
             </div>
           ))}
         </div>

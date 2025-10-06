@@ -2,6 +2,7 @@ import "./globals.css";
 import { Roboto } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { CartProvider } from "@/context/CartContext"; 
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -29,11 +30,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${roboto.className} flex flex-col min-h-screen`} suppressHydrationWarning>
-        <Header />
-        <main className="flex-1">{children}</main>
 
-        <Footer />
+      <body
+        className={`${roboto.className} flex flex-col min-h-screen`}
+        suppressHydrationWarning
+      >
+        <CartProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );
