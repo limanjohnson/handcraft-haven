@@ -44,11 +44,10 @@ a {
   }
 }
 
-/* Prevent browser extensions from causing hydration errors */
-* {
-  -webkit-user-modify: read-write-plaintext-only;
-}
 
-a, button, input {
-  -webkit-user-modify: read-write-plaintext-only;
+a,
+a:link,
+a:visited,
+a:any-link{
+    cursor:pointer;
 }
