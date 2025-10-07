@@ -1,56 +1,99 @@
+import styles from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
+import { getFeaturedProducts, getAllArtisans } from "../../lib/repos";
 
-function Main({ children, className }: { children: React.ReactNode; className?: string }) {
-    return <main className={className}>{children}</main>;
-}
+export default async function Home() {
+  const [products, artisans] = await Promise.all([
+    getFeaturedProducts(6),
+    getAllArtisans(6),
+  ]);
 
-export default function Home() {
-    return (
-        <div className="min-h-screen flex flex-col">
-            <Main className="flex-1 w-full">
-                {/* Hero Section */}
-                <section className="relative w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-                    {/* Background Image */}
-                    <div className="absolute inset-0 z-0">
-                        <Image
-                            src="/hero-image.jpg"
-                            alt="Handcrafted products"
-                            fill
-                            className="object-cover object-center"
-                            priority
-                        />
-                        {/* Dark overlay */}
-                        <div className="absolute inset-0 bg-black/40 z-10"></div>
-                    </div>
+  return (
+    <div className={styles.page}>
+      <main className={styles.main}>
+        {/* Hero Section - Full Width */}
+        <section className={styles.hero}>
+          {/* Background Image */}
+          <div className={styles.heroImageBackground}>
+            <Image
+              src="/hero-image.jpg"
+              alt="Handcrafted products"
+              fill
+              className={styles.heroBackgroundImg}
+              style={{ objectFit: 'cover' }}
+              priority
+            />
+            {/* Dark overlay for better text readability */}
+            <div className={styles.heroOverlay}></div>
+          </div>
 
-                    {/* Content on top of image */}
-                    <div className="relative z-20 max-w-3xl px-6 text-center text-white">
-                        <h1 className="text-5xl md:text-6xl font-bold mb-6 drop-shadow-[2px_2px_8px_rgba(0,0,0,0.8)]">
-                            Discover Unique Handcrafted Treasures
-                        </h1>
-                        <p className="text-lg md:text-xl leading-relaxed mb-8 drop-shadow-[1px_1px_6px_rgba(0,0,0,0.8)]">
-                            Connect with talented artisans and find one-of-a-kind pieces that tell a story.
-                            From handmade jewelry to custom furniture, every item is crafted with passion.
-                        </p>
+          {/* Content on top of image */}
+          <div className={styles.heroContent}>
+            <h1 className={styles.heroTitle}>
+              Discover Unique Handcrafted Treasures
+            </h1>
+            <p className={styles.heroSubtitle}>
+              Connect with talented artisans and find one-of-a-kind pieces that tell a story. 
+              From handmade jewelry to custom furniture, every item is crafted with passion.
+            </p>
+            <div className={styles.heroCtas}>
+              <Link href="/products" className={styles.ctaPrimary}>
+                <span>Explore Products</span>
+              </Link>
+              <Link href="/artisans" className={styles.ctaSecondary}>
+                <span>Meet Artisans</span>
+              </Link>
+            </div>
+          </div>
+        </section>
 
-                        <div className="flex gap-4 justify-center flex-wrap">
-                            <Link
-                                href="/products"
-                                className="inline-block px-8 py-3 rounded-lg font-semibold border-2 bg-[#8B6F47] border-[#8B6F47] text-white transition-all duration-300 hover:bg-[#5C4A3A] hover:border-[#5C4A3A] hover:-translate-y-0.5 hover:shadow-lg"
-                            >
-                                Explore Products
-                            </Link>
-                            <Link
-                                href="/artisans"
-                                className="inline-block px-8 py-3 rounded-lg font-semibold border-2 border-white text-white transition-all duration-300 hover:bg-white/15 hover:-translate-y-0.5"
-                            >
-                                Meet Artisans
-                            </Link>
-                        </div>
-                    </div>
-                </section>
-            </Main>
-        </div>
-    );
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Featured products</h2>
+            <Link href="/products" className={styles.sectionLink}>Browse products</Link>
+          </div>
+          <div className={styles.grid}>
+            {products.map((p: any) => (
+              <div key={p.id} className={styles.card}>
+                <div className={styles.cardImage}>
+                  <Image src={p.image_url} alt={p.title} width={320} height={200} />
+                </div>
+                <div className={styles.cardBody}>
+                  <h3 className={styles.cardTitle}>{p.title}</h3>
+                  <div className={styles.cardMeta}>
+                    <span className={styles.price}>${Number(p.price).toFixed(2)}</span>
+                    <Link href="/products" className={styles.cardAction}>View</Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Meet our artisans</h2>
+            <Link href="/artisans" className={styles.sectionLink}>Explore artisans</Link>
+          </div>
+          <div className={styles.grid}>
+            {artisans.map((a: any) => (
+              <div key={a.id} className={styles.card}>
+                <div className={styles.cardImage}>
+                  <Image src={a.image_url} alt={`${a.name} avatar`} width={160} height={160} />
+                </div>
+                <div className={styles.cardBody}>
+                  <h3 className={styles.cardTitle}>{a.name}</h3>
+                  <div className={styles.cardMeta}>
+                    <span className={styles.muted}>{a.bio ? a.bio.substring(0, 50) + '...' : "Artisan"}</span>
+                    <Link href="/artisans" className={styles.cardAction}>Profile</Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
+  );
 }
