@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import pool from '../../../../lib/db';
+import {pool} from '../../../../lib/db';
 
 // GET: all products
 export async function GET() {
@@ -38,10 +38,10 @@ export async function GETByUser(req: Request, { params }: { params: { user_id: s
 // POST: new product
 export async function POST(req: Request) {
   try {
-    const { title, description, price, user_id } = await req.json();
+    const { title, description, price, image_url, user_id } = await req.json();
     const res = await pool.query(
-      'INSERT INTO products (title, description, price, user_id) VALUES ($1, $2, $3, $4) RETURNING *',
-      [title, description, price, user_id]
+      'INSERT INTO products (title, description, price, image_url, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [title, description, price, image_url, user_id]
     );
     return NextResponse.json(res.rows[0]);
   } catch (error) {
@@ -52,10 +52,10 @@ export async function POST(req: Request) {
 // PUT: update product by ID
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   try {
-    const { title, description, price } = await req.json();
+    const { title, description, price, image_url } = await req.json();
     const res = await pool.query(
-      'UPDATE products SET title = $1, description = $2, price = $3 WHERE id = $4 RETURNING *',
-      [title, description, price, params.id]
+      'UPDATE products SET title = $1, description = $2, price = $3, image_url = $4 WHERE id = $5 RETURNING *',
+      [title, description, price, image_url, params.id]
     );
     if (res.rows.length === 0) {
         return NextResponse.json({ error: 'Product not found' }, { status: 404 });
