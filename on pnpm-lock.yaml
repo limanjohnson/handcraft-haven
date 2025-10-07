@@ -1,0 +1,37 @@
+[1mdiff --git a/pnpm-lock.yaml b/pnpm-lock.yaml[m
+[1mindex 6704b0f..57a93d3 100644[m
+[1m--- a/pnpm-lock.yaml[m
+[1m+++ b/pnpm-lock.yaml[m
+[36m@@ -42,6 +42,9 @@[m [mimporters:[m
+       '@types/node':[m
+         specifier: ^20[m
+         version: 20.19.17[m
+[32m+[m[32m      '@types/pg':[m
+[32m+[m[32m        specifier: ^8.15.5[m
+[32m+[m[32m        version: 8.15.5[m
+       '@types/react':[m
+         specifier: ^19.1.13[m
+         version: 19.1.15[m
+[36m@@ -1532,6 +1535,9 @@[m [mpackages:[m
+   '@types/node@20.19.17':[m
+     resolution: {integrity: sha512-gfehUI8N1z92kygssiuWvLiwcbOB3IRktR6hTDgJlXMYh5OvkPSRmgfoBUmfZt+vhwJtX7v1Yw4KvvAf7c5QKQ==}[m
+ [m
+[32m+[m[32m  '@types/pg@8.15.5':[m
+[32m+[m[32m    resolution: {integrity: sha512-LF7lF6zWEKxuT3/OR8wAZGzkg4ENGXFNyiV/JeOt9z5B+0ZVwbql9McqX5c/WStFq1GaGso7H1AzP/qSzmlCKQ==}[m
+[32m+[m
+   '@types/react-dom@19.1.9':[m
+     resolution: {integrity: sha512-qXRuZaOsAdXKFyOhRBg6Lqqc0yay13vN7KrIg4L7N4aaHN68ma9OK3NE1BoDFgFOTfM7zg+3/8+2n8rLUH3OKQ==}[m
+     peerDependencies:[m
+[36m@@ -5319,6 +5325,12 @@[m [msnapshots:[m
+     dependencies:[m
+       undici-types: 6.21.0[m
+ [m
+[32m+[m[32m  '@types/pg@8.15.5':[m
+[32m+[m[32m    dependencies:[m
+[32m+[m[32m      '@types/node': 20.19.17[m
+[32m+[m[32m      pg-protocol: 1.10.3[m
+[32m+[m[32m      pg-types: 2.2.0[m
+[32m+[m
+   '@types/react-dom@19.1.9(@types/react@19.1.15)':[m
+     dependencies:[m
+       '@types/react': 19.1.15[m

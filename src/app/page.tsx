@@ -1,99 +1,99 @@
-import Image from "next/image";
 import styles from "./page.module.css";
+import Link from "next/link";
+import Image from "next/image";
+import { getFeaturedProducts, getAllArtisans } from "@/lib/repos";
 
-function Main({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <main className={className}>{children}</main>;
-}
+export default async function Home() {
+  const [products, artisans] = await Promise.all([
+    getFeaturedProducts(6),
+    getAllArtisans(6),
+  ]);
 
-export default function Home() {
   return (
     <div className={styles.page}>
-      <Main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+      <main className={styles.main}>
+        {/* Hero Section - Full Width */}
+        <section className={styles.hero}>
+          {/* Background Image */}
+          <div className={styles.heroImageBackground}>
             <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src="/hero-image.jpg"
+              alt="Handcrafted products"
+              fill
+              className={styles.heroBackgroundImg}
+              style={{ objectFit: 'cover' }}
+              priority
             />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </Main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            {/* Dark overlay for better text readability */}
+            <div className={styles.heroOverlay}></div>
+          </div>
+
+          {/* Content on top of image */}
+          <div className={styles.heroContent}>
+            <h1 className={styles.heroTitle}>
+              Discover Unique Handcrafted Treasures
+            </h1>
+            <p className={styles.heroSubtitle}>
+              Connect with talented artisans and find one-of-a-kind pieces that tell a story. 
+              From handmade jewelry to custom furniture, every item is crafted with passion.
+            </p>
+            <div className={styles.heroCtas}>
+              <Link href="/products" className={styles.ctaPrimary}>
+                <span>Explore Products</span>
+              </Link>
+              <Link href="/artisans" className={styles.ctaSecondary}>
+                <span>Meet Artisans</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Featured products</h2>
+            <Link href="/products" className={styles.sectionLink}>Browse products</Link>
+          </div>
+          <div className={styles.grid}>
+            {products.map((p: any) => (
+              <div key={p.id} className={styles.card}>
+                <div className={styles.cardImage}>
+                  <Image src="/file.svg" alt={p.title} width={320} height={200} />
+                </div>
+                <div className={styles.cardBody}>
+                  <h3 className={styles.cardTitle}>{p.title}</h3>
+                  <div className={styles.cardMeta}>
+                    <span className={styles.price}>${Number(p.price).toFixed(2)}</span>
+                    <Link href="/products" className={styles.cardAction}>View</Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Meet our artisans</h2>
+            <Link href="/artisans" className={styles.sectionLink}>Explore artisans</Link>
+          </div>
+          <div className={styles.grid}>
+            {artisans.map((a: any) => (
+              <div key={a.id} className={styles.card}>
+                <div className={styles.cardImage}>
+                  <Image src="/globe.svg" alt={`${a.name} avatar`} width={160} height={160} />
+                </div>
+                <div className={styles.cardBody}>
+                  <h3 className={styles.cardTitle}>{a.name}</h3>
+                  <div className={styles.cardMeta}>
+                    <span className={styles.muted}>{a.bio ? a.bio.substring(0, 50) + '...' : "Artisan"}</span>
+                    <Link href="/artisans" className={styles.cardAction}>Profile</Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
