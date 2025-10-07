@@ -10,7 +10,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="bg-[#EAE2B7]" suppressHydrationWarning>
+    <header className="bg-[#D4C5A9]" suppressHydrationWarning>
       <div className="flex items-center justify-between p-4">
 
         {/* Logo + Name */}
@@ -36,11 +36,13 @@ export default function Header() {
             {/* Desktop Menu  */}
             <nav className="hidden md:flex md:items-center md:gap-6">
               <NavigationMenu className="m-4"/>
-                <button
+                <Link href='/login'>
+                    <button
                     className="px-2.5 py-1.5 border-2 border-[#003049] rounded-md bg-white text-[#003049] transition duration-200 hover:bg-[#003049] hover:text-white focus:outline-none focus:bg-[#003049] focus:text-white"
                 >
                     Login
                 </button>
+                </Link>
             </nav>
           </div>
 
