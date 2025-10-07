@@ -11,7 +11,7 @@ const roboto = Roboto({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt">
-      <body className={`${roboto.className} flex flex-col min-h-screen`}>
+      <body className={`${roboto.className} flex flex-col min-h-screen bg-gray-300`}>
         <Header />
         <main className="flex-1">{children}</main>
 

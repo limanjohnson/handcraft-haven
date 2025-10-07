@@ -9,11 +9,11 @@ const imperialScript = Imperial_Script({
     subsets: ['latin'],
 });
 
-export default function LoginForm() {
+export default function SignupForm() {
     // const searchParams = useSearchParams();
     // const [errorMessage, formAction, isPending] = useActionState(
-        //authenticate,
-        // undefined,
+    //authenticate,
+    // undefined,
     // );
 
     return(
@@ -22,14 +22,14 @@ export default function LoginForm() {
             className="space-y-3">
             <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
                 <h1 className="mb-3 text-2xl dark:text-gray-800">
-                    Please log in to continue.
+                    Sign up to continue.
                 </h1>
                 <div className="w-full">
                     <label
                         className="mb-3 mt-5 block text-xs font-medium text-gray-900"
                         htmlFor="email"
                     >
-                        Email
+                        Enter Email
                     </label>
                     <div className="relative">
                         <input
@@ -44,7 +44,7 @@ export default function LoginForm() {
                 </div>
                 <div className="mt-4">
                     <label className="mb-3 mt-5 block text-xs font-medium text-gray-900">
-                        Password
+                        Create Password
                     </label>
                     <div className="relative">
                         <input
@@ -58,11 +58,30 @@ export default function LoginForm() {
                         />
                     </div>
                 </div>
+                <div className="mt-4">
+                    <label
+                        className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+                        htmlFor="confirmPassword"
+                    >
+                        Confirm Password
+                    </label>
+                    <div className="relative">
+                        <input
+                            className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                            id="confirmPassword"
+                            type="password"
+                            name="confirmPassword"
+                            placeholder="Confirm your password"
+                            required
+                            minLength={6}
+                        />
+                    </div>
+                </div>
 
             </div>
             <div>
-                <Link href="/signup">
-                    Don&apos;t have an account? Sign up here.
+                <Link href="/login">
+                    Already have an account? Sign in here.
                 </Link>
             </div>
         </form>
