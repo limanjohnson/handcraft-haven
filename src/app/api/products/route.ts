@@ -1,47 +1,80 @@
-import { NextResponse } from "next/server";
-import { query } from "@/lib/db";
+import { NextResponse } from 'next/server';
+import {pool} from '../../../../lib/db';
 
-export const runtime = "nodejs";
-
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const category = searchParams.get("category");
-  const limit = Math.min(parseInt(searchParams.get("limit") ?? "12", 10), 100);
-
-  const params: any[] = [];
-  const where: string[] = [];
-
-  if (category) {
-    params.push(category);
-    where.push(`category = $${params.length}`);
+// GET: all products
+export async function GET() {
+  try {
+    const res = await pool.query('SELECT * FROM products ORDER BY id ASC');
+    return NextResponse.json(res.rows);
+  } catch (error) {
+    return NextResponse.json({ error: 'Error fetching products' }, { status: 500 });
   }
-
-  const sql = `
-    select id, title, price, created_at
-    from products
-    ${where.length ? `where ${where.join(" and ")}` : ""}
-    order by created_at desc
-    limit $${params.push(limit)}
-  `;
-
-  const { rows } = await query(sql, params);
-  return NextResponse.json(rows);
 }
 
-export async function POST(req: Request) {
-  const body = await req.json();
-  const { title, price, description = null, stock = 0, category = null, image_url = null, artisan_id = null } = body ?? {};
+// GET: single product by ID
+// export async function GETSingle(req: Request, { params }: { params: { id: string } }) {
+//   try {
+//     const res = await pool.query('SELECT * FROM products WHERE id = $1', [params.id]);
+//     if (res.rows.length === 0) {
+//       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+//     }
+//     return NextResponse.json(res.rows[0]);
+//     } catch (error) {
+//     return NextResponse.json({ error: 'Error fetching product' }, { status: 500 });
+//   }
+// }
 
-  if (!title || typeof price !== "number") {
-    return NextResponse.json({ error: "title and numeric price are required" }, { status: 400 });
-  }
+//GET: products by user ID
+// export async function GETByUser(req: Request, { params }: { params: { user_id: string } }) {
+//   try {
+//     const res = await pool.query('SELECT * FROM products WHERE user_id = $1 ORDER BY id ASC', [params.user_id]);
+//     return NextResponse.json(res.rows);
+//   } catch (error) {
+//     return NextResponse.json({ error: 'Error fetching products for user' }, { status: 500 });
+//   }
+// }
 
-  const { rows } = await query(
-    `insert into products (title, description, price, stock, category, image_url, artisan_id)
-     values ($1,$2,$3,$4,$5,$6,$7)
-     returning id, title, price, stock, category, image_url, artisan_id, created_at`,
-    [title, description, price, stock, category, image_url, artisan_id]
-  );
 
-  return NextResponse.json(rows[0], { status: 201 });
-}
+// POST: new product
+// export async function POST(req: Request) {
+//   try {
+//     const { title, description, price, image_url, user_id } = await req.json();
+//     const res = await pool.query(
+//       'INSERT INTO products (title, description, price, image_url, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+//       [title, description, price, image_url, user_id]
+//     );
+//     return NextResponse.json(res.rows[0]);
+//   } catch (error) {
+//     return NextResponse.json({ error: 'Error creating product' }, { status: 500 });
+//   }
+// }
+
+// PUT: update product by ID
+// export async function PUT(req: Request, { params }: { params: { id: string } }) {
+//   try {
+//     const { title, description, price, image_url } = await req.json();
+//     const res = await pool.query(
+//       'UPDATE products SET title = $1, description = $2, price = $3, image_url = $4 WHERE id = $5 RETURNING *',
+//       [title, description, price, image_url, params.id]
+//     );
+//     if (res.rows.length === 0) {
+//         return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+//     }
+//     return NextResponse.json(res.rows[0]);
+//   } catch (error) {
+//     return NextResponse.json({ error: 'Error updating product' }, { status: 500 });
+//   }
+// }
+
+// DELETE: product by ID
+// export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+//   try {
+//     const res = await pool.query('DELETE FROM products WHERE id = $1 RETURNING *', [params.id]);
+//     if (res.rows.length === 0) {
+//       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+//     }
+//     return NextResponse.json({ message: 'Product deleted successfully' });
+//   } catch (error) {
+//     return NextResponse.json({ error: 'Error deleting product' }, { status: 500 });
+//   }
+// }

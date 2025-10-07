@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import { getFeaturedProducts, getAllArtisans } from "@/lib/repos";
+import { getFeaturedProducts, getAllArtisans } from "../../lib/repos";
 
 export default async function Home() {
   const [products, artisans] = await Promise.all([
@@ -57,7 +57,7 @@ export default async function Home() {
             {products.map((p: any) => (
               <div key={p.id} className={styles.card}>
                 <div className={styles.cardImage}>
-                  <Image src="/file.svg" alt={p.title} width={320} height={200} />
+                  <Image src={p.image_url} alt={p.title} width={320} height={200} />
                 </div>
                 <div className={styles.cardBody}>
                   <h3 className={styles.cardTitle}>{p.title}</h3>
@@ -80,7 +80,7 @@ export default async function Home() {
             {artisans.map((a: any) => (
               <div key={a.id} className={styles.card}>
                 <div className={styles.cardImage}>
-                  <Image src="/globe.svg" alt={`${a.name} avatar`} width={160} height={160} />
+                  <Image src={a.image_url} alt={`${a.name} avatar`} width={160} height={160} />
                 </div>
                 <div className={styles.cardBody}>
                   <h3 className={styles.cardTitle}>{a.name}</h3>
