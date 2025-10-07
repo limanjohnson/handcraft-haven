@@ -12,14 +12,14 @@ export async function GET() {
 }
 
 // GET: single artisan by ID
-export async function GETSingle(req: Request, { params }: { params: { id: string } }) {
-  try {
-    const res = await pool.query('SELECT * FROM artisans WHERE id = $1', [params.id]);
-    if (res.rows.length === 0) {
-      return NextResponse.json({ error: 'Artisan not found' }, { status: 404 });
-    }
-    return NextResponse.json(res.rows[0]);
-    } catch (error) {
-    return NextResponse.json({ error: 'Error fetching artisan' }, { status: 500 });
-  }
-}
+// export async function GETSingle(req: Request, { params }: { params: { id: string } }) {
+//   try {
+//     const res = await pool.query('SELECT * FROM artisans WHERE id = $1', [params.id]);
+//     if (res.rows.length === 0) {
+//       return NextResponse.json({ error: 'Artisan not found' }, { status: 404 });
+//     }
+//     return NextResponse.json(res.rows[0]);
+//     } catch (error) {
+//     return NextResponse.json({ error: 'Error fetching artisan' }, { status: 500 });
+//   }
+// }
