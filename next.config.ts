@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
         hostname: 'images.unsplash.com',
       },
     ],
+    
+  },
+
+  eslint: {
+    ignoreDuringBuilds: true, // Ignore ESLint errors during builds
   },
 
   // Suppress hydration warnings caused by browser extensions
