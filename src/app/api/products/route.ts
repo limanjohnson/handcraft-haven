@@ -1,80 +1,98 @@
-import { NextResponse } from 'next/server';
-import {pool} from '../../../../lib/db';
+import { NextResponse } from "next/server";
+import { query } from "../../../../lib/db";
 
-// GET: all products
-export async function GET() {
+type Artisan = {
+  id: number;
+  name: string;
+  bio?: string;
+  contact_email?: string;
+  created_at?: string;
+};
+
+type Product = {
+  id: number;
+  artisan_id: number;
+  title: string;
+  description?: string;
+  price: number; 
+  stock: number; 
+  created_at?: string;
+  image_url?: string | null;
+  artisan_name?: string;
+  artisan_email?: string;
+};
+
+function normalizeProduct(row: any): Product {
+  return {
+    ...row,
+    price: Number(row.price),
+    stock: Number(row.stock),
+    image_url: row.image_url || null,
+  };
+}
+
+export async function GET(request: Request) {
   try {
-    const res = await pool.query('SELECT * FROM products ORDER BY id ASC');
-    return NextResponse.json(res.rows);
-  } catch (error) {
-    return NextResponse.json({ error: 'Error fetching products' }, { status: 500 });
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (id) {
+      const productResult = await query(
+        `SELECT p.*, a.name as artisan_name, a.contact_email as artisan_email
+         FROM products p
+         LEFT JOIN artisans a ON p.artisan_id = a.id
+         WHERE p.id = $1`,
+        [Number(id)]
+      );
+
+      if (productResult.rows.length === 0) {
+        return NextResponse.json({ error: "Product not found" }, { status: 404 });
+      }
+
+      const product = normalizeProduct(productResult.rows[0]);
+
+      const relatedResult = await query(
+        `SELECT * FROM products WHERE id != $1 AND artisan_id = $2 LIMIT 4`,
+        [Number(id), product.artisan_id]
+      );
+
+      const related = relatedResult.rows.map(normalizeProduct);
+
+      return NextResponse.json({ product, related });
+    }
+
+    const productsResult = await query(
+      `SELECT p.*, a.name as artisan_name, a.contact_email as artisan_email
+       FROM products p
+       LEFT JOIN artisans a ON p.artisan_id = a.id`
+    );
+
+    const products = productsResult.rows.map(normalizeProduct);
+
+    return NextResponse.json({ products });
+  } catch (err) {
+    console.error("Error fetching products:", err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
-// GET: single product by ID
-// export async function GETSingle(req: Request, { params }: { params: { id: string } }) {
-//   try {
-//     const res = await pool.query('SELECT * FROM products WHERE id = $1', [params.id]);
-//     if (res.rows.length === 0) {
-//       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
-//     }
-//     return NextResponse.json(res.rows[0]);
-//     } catch (error) {
-//     return NextResponse.json({ error: 'Error fetching product' }, { status: 500 });
-//   }
-// }
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { title, description, price, stock, artisanId } = body;
 
-//GET: products by user ID
-// export async function GETByUser(req: Request, { params }: { params: { user_id: string } }) {
-//   try {
-//     const res = await pool.query('SELECT * FROM products WHERE user_id = $1 ORDER BY id ASC', [params.user_id]);
-//     return NextResponse.json(res.rows);
-//   } catch (error) {
-//     return NextResponse.json({ error: 'Error fetching products for user' }, { status: 500 });
-//   }
-// }
+    const result = await query(
+      `INSERT INTO products (title, description, price, stock, artisan_id)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [title, description, price, stock || 0, artisanId]
+    );
 
+    const product = normalizeProduct(result.rows[0]);
 
-// POST: new product
-// export async function POST(req: Request) {
-//   try {
-//     const { title, description, price, image_url, user_id } = await req.json();
-//     const res = await pool.query(
-//       'INSERT INTO products (title, description, price, image_url, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-//       [title, description, price, image_url, user_id]
-//     );
-//     return NextResponse.json(res.rows[0]);
-//   } catch (error) {
-//     return NextResponse.json({ error: 'Error creating product' }, { status: 500 });
-//   }
-// }
-
-// PUT: update product by ID
-// export async function PUT(req: Request, { params }: { params: { id: string } }) {
-//   try {
-//     const { title, description, price, image_url } = await req.json();
-//     const res = await pool.query(
-//       'UPDATE products SET title = $1, description = $2, price = $3, image_url = $4 WHERE id = $5 RETURNING *',
-//       [title, description, price, image_url, params.id]
-//     );
-//     if (res.rows.length === 0) {
-//         return NextResponse.json({ error: 'Product not found' }, { status: 404 });
-//     }
-//     return NextResponse.json(res.rows[0]);
-//   } catch (error) {
-//     return NextResponse.json({ error: 'Error updating product' }, { status: 500 });
-//   }
-// }
-
-// DELETE: product by ID
-// export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-//   try {
-//     const res = await pool.query('DELETE FROM products WHERE id = $1 RETURNING *', [params.id]);
-//     if (res.rows.length === 0) {
-//       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
-//     }
-//     return NextResponse.json({ message: 'Product deleted successfully' });
-//   } catch (error) {
-//     return NextResponse.json({ error: 'Error deleting product' }, { status: 500 });
-//   }
-// }
+    return NextResponse.json(product, { status: 201 });
+  } catch (err) {
+    console.error("Error creating product:", err);
+    return NextResponse.json({ error: "Failed to create product" }, { status: 500 });
+  }
+}
