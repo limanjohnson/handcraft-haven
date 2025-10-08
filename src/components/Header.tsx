@@ -22,7 +22,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="bg-[#D4C5A9]">
+    <header className="bg-[#fff]">
       <div className="flex items-center justify-between p-4">
         {/* Logo + Name */}
         <Link href="/" className="flex items-center gap-2 bg-white p-2 rounded-md">
@@ -53,10 +53,10 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden border-t border-highlight" style={{ backgroundColor: '#EAE2B7' }}>
-          <NavigationMenu />
-          <Link href="/login">
-            <button className="px-2.5 py-1.5 border-2 border-[#003049] rounded-md bg-white text-[#003049] transition duration-200 hover:bg-[#003049] hover:text-white focus:outline-none focus:bg-[#003049] focus:text-white">
+        <div className="md:hidden border-t border-highlight" style={{ backgroundColor: '#fff' }}>
+          <NavigationMenu className="flex flex-col gap-4 p-4"/>
+          <Link href="/login" className="p-4">
+            <button className="m-4 flex px-4 py-1.5 border-2 border-[#003049] rounded-md bg-white text-[#003049] transition duration-200 hover:bg-[#003049] hover:text-white focus:outline-none focus:bg-[#003049] focus:text-white">
               Login
             </button>
           </Link>
