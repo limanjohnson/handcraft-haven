@@ -64,7 +64,8 @@ export async function GET(request: Request) {
     const productsResult = await query(
       `SELECT p.*, a.name as artisan_name, a.contact_email as artisan_email
        FROM products p
-       LEFT JOIN artisans a ON p.artisan_id = a.id`
+       LEFT JOIN artisans a ON p.artisan_id = a.id
+       ORDER BY p.created_at DESC`
     );
 
     const products = productsResult.rows.map(normalizeProduct);

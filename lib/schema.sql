@@ -3,13 +3,13 @@ create table if not exists artisans (
   name varchar(100) not null,
   bio text,
   contact_email varchar(150),
+  image_url text,
   created_at timestamp default now()
 );
 
 create table if not exists users (
   id serial primary key,
   name varchar(100) not null,
-  email varchar(150) unique not null,
   password_hash text not null,
   created_at timestamp default now()
 );
@@ -21,6 +21,7 @@ create table if not exists products (
   description text,
   price numeric(10,2) not null,
   stock integer default 0,
+  image_url text,
   created_at timestamp default now(),
   constraint products_artisan_id_fkey
     foreign key (artisan_id)

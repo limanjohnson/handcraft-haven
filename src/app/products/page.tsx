@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+import ProductFilter from "@/components/ProductFilter";
 
 type Product = {
   id: number;
@@ -10,6 +11,15 @@ type Product = {
   stock: number;
   image_url?: string | null;
   artisan_name?: string;
+  created_at?: string;
+};
+
+type FilterOptions = {
+  search: string;
+  minPrice: string;
+  maxPrice: string;
+  inStock: boolean;
+  sortBy: "price-asc" | "price-desc" | "name-asc" | "name-desc" | "newest";
 };
 
 export default function ProductsPage() {
@@ -17,6 +27,13 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [filters, setFilters] = useState<FilterOptions>({
+    search: "",
+    minPrice: "",
+    maxPrice: "",
+    inStock: false,
+    sortBy: "newest",
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -38,18 +55,79 @@ export default function ProductsPage() {
     loadProducts();
   }, []);
 
+  // Apply filters and sorting to products
+  const filteredProducts = useMemo(() => {
+    let filtered = [...products];
+
+    // Search filter
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase();
+      filtered = filtered.filter(
+        (product) =>
+          product.title.toLowerCase().includes(searchLower) ||
+          product.description?.toLowerCase().includes(searchLower) ||
+          product.artisan_name?.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Price range filter
+    if (filters.minPrice) {
+      const min = parseFloat(filters.minPrice);
+      filtered = filtered.filter((product) => product.price >= min);
+    }
+    if (filters.maxPrice) {
+      const max = parseFloat(filters.maxPrice);
+      filtered = filtered.filter((product) => product.price <= max);
+    }
+
+    // Stock filter
+    if (filters.inStock) {
+      filtered = filtered.filter((product) => product.stock > 0);
+    }
+
+    // Sorting
+    switch (filters.sortBy) {
+      case "price-asc":
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case "price-desc":
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case "name-asc":
+        filtered.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "name-desc":
+        filtered.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      case "newest":
+        filtered.sort((a, b) => {
+          if (!a.created_at || !b.created_at) return 0;
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        });
+        break;
+    }
+
+    return filtered;
+  }, [products, filters]);
+
   if (!mounted) return null;
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Products</h1>
 
+      <ProductFilter onFilterChange={setFilters} />
+
       {loading && <p>Loading products...</p>}
       {error && <p className="text-red-500">{error}</p>}
-      {!loading && products.length === 0 && <p>No products found.</p>}
+      {!loading && filteredProducts.length === 0 && (
+        <p className="text-gray-600 text-center py-8">
+          {products.length === 0 ? "No products found." : "No products match your filters."}
+        </p>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div key={product.id} className="border rounded-lg p-4 shadow hover:shadow-lg transition">
             {product.image_url ? (
               <img
