@@ -63,7 +63,7 @@ export default async function Home() {
                   <h3 className={styles.cardTitle}>{p.title}</h3>
                   <div className={styles.cardMeta}>
                     <span className={styles.price}>${Number(p.price).toFixed(2)}</span>
-                    <Link href="/products" className={styles.cardAction}>View</Link>
+                    <Link href={`/products/${p.id}`} className={styles.cardAction}>View</Link>
                   </div>
                 </div>
               </div>
@@ -86,7 +86,7 @@ export default async function Home() {
                   <h3 className={styles.cardTitle}>{a.name}</h3>
                   <div className={styles.cardMeta}>
                     <span className={styles.muted}>{a.bio ? a.bio.substring(0, 50) + '...' : "Artisan"}</span>
-                    <Link href="/artisans" className={styles.cardAction}>Profile</Link>
+                    <Link href={`/artisans/${a.id}`} className={styles.cardAction}>Profile</Link>
                   </div>
                 </div>
               </div>
