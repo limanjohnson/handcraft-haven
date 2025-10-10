@@ -22,7 +22,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="bg-[#fff]">
+    <header style={{ backgroundColor: "#5C4A3A", color: "#fff" }} className="mt-10">
       <div className="flex items-center justify-between p-4">
         {/* Logo + Name */}
         <Link href="/" className="flex items-center gap-2 bg-white p-2 rounded-md">
