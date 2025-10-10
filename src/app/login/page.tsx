@@ -1,24 +1,43 @@
-import { Suspense } from 'react';
-import { Metadata} from "next";
+import { Suspense } from "react";
+import { Metadata } from "next";
 import LoginForm from "@/app/ui/login-form";
 
 export const metadata: Metadata = {
-    title: "Login",
+  title: "Login",
 };
 
 export default function LoginPage() {
-    return (
-        <main className="flex items-center justify-center md:h-screen">
-            <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4 md:-mt-32">
-                <div className="flex h-20 w-full items-end rounded-lg bg-gray-300 p-3 md:h-36">
-                    <div className="w-32 text-black md:w-36">
-                        Login
-                    </div>
-                </div>
-                <Suspense>
-                    <LoginForm />
-                </Suspense>
-            </div>
-        </main>
-    )
+  return (
+    <main className="flex justify-center bg-gray-100 min-h-screen pt-24 pb-12">
+      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6 space-y-6">
+        <div className="flex items-center justify-center h-16 rounded-lg bg-gray-300">
+          <h1 className="text-2xl font-bold text-gray-800">Login</h1>
+        </div>
+
+        <Suspense>
+          <LoginForm />
+        </Suspense>
+
+        {/* <button
+          type="submit"
+          form="login-form"
+          className="w-full bg-[#8B6F47] text-white py-3 rounded-md font-semibold hover:bg-[#7a603e] transition-colors"
+        >
+          Sign In
+        </button>
+
+        <div className="text-center text-sm text-gray-900">
+          <p>
+            Don’t have an account?{" "}
+            <a
+              href="/signup"
+              className="text-[#8B6F47] font-semibold hover:underline text-black"
+            >
+              Sign Up
+            </a>
+          </p>
+        </div> */}
+      </div>
+    </main>
+  );
 }

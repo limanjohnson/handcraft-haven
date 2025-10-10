@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
+
+function handleAddToCart() {
+  alert("Added to cart!");
+}
 
 type Product = {
   id: number;
@@ -62,6 +67,14 @@ export default function ProductDetailsPage() {
         </div>
       )}
 
+      <button
+        onClick={handleAddToCart}
+        className="bg-[#8B6F47] text-white px-6 py-3 rounded-md font-semibold cursor-pointer mt-6 hover:bg-[#7a603e] transition-colors"
+      >
+        🛒 Add to Cart
+      </button>
+
+
       <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
       <p className="text-gray-600 mb-4">{product.description}</p>
       <p className="text-2xl font-semibold mb-2">${product.price.toFixed(2)}</p>
@@ -99,6 +112,14 @@ export default function ProductDetailsPage() {
                 </a>
               </div>
             ))}
+          </div>
+          <div className="mt-12 text-left">
+          <Link
+            href="/products"
+            className="inline-block bg-gray-500 text-black px-6 py-3 rounded-md font-semibold hover:bg-gray-600 transition-colors"
+          >
+            ← Back to Products
+          </Link>
           </div>
         </div>
       )}
