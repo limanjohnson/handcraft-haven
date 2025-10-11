@@ -83,7 +83,7 @@ export default function ProductDetailsPage() {
       </button>
 
       {product.artisan_name && (
-        <div className="mt-6 border-t pt-4">
+        <div className="mt-6 border-t pt-4 border-b mb-6">
           <p className="font-semibold">{product.artisan_name}</p>
           {product.artisan_email && <p className="mb-4 text-gray-500">{product.artisan_email}</p>}
         </div>

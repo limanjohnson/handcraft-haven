@@ -73,9 +73,45 @@ export default function ProductReviews({ productId }: { productId: number }) {
   if (loading) return <p className="text-gray-500">Loading reviews...</p>
 
   if (reviews.length === 0)
-    return <div className="bg-white rounded-2xl shadow p-6 transition">
-    <p className="text-gray-600">No reviews yet for this product.</p>
-    </div>
+    return <div>
+      <div className="bg-white rounded-2xl shadow p-6 transition">
+        <p className="text-gray-600">No reviews yet for this product.</p>
+      </div>
+    {/* FORM FOR NEW REVIEWS */}
+      <form onSubmit={handleSubmit} className="mt-6 pt-4">
+        <h4 className="text-lg font-semibold mb-2">Leave a Review</h4>
+
+        <div className="flex items-center gap-2 mb-3">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button
+              key={star}
+              type="button"
+              onClick={() => setNewRating(star)}
+              className={`text-2xl ${
+                newRating >= star ? "text-yellow-500" : "text-gray-400"
+              }`}
+            >
+              ★
+            </button>
+          ))}
+        </div>
+
+        <textarea
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="Write your review..."
+          className="w-full border border-[#D4C5A9] rounded-md p-2 mb-3"
+        />
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="bg-[#8B6F47] text-white px-4 py-2 rounded hover:bg-[#7a603e] transition-colors disabled:opacity-50"
+        >
+          {submitting ? "Submitting..." : "Submit Review"}
+        </button>
+      </form>
+    </div>;
 
   return (
     <div className="mt-6">
@@ -101,7 +137,7 @@ export default function ProductReviews({ productId }: { productId: number }) {
       </ul>
 
       {/* FORM FOR NEW REVIEWS */}
-      <form onSubmit={handleSubmit} className="mt-6 border-t pt-4">
+      <form onSubmit={handleSubmit} className="mt-6 pt-4">
         <h4 className="text-lg font-semibold mb-2">Leave a Review</h4>
 
         <div className="flex items-center gap-2 mb-3">
