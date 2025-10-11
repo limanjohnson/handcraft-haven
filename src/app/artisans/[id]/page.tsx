@@ -143,7 +143,7 @@ export default function ArtisanDetailsPage() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="bg-white border rounded-lg overflow-hidden shadow hover:shadow-lg transition"
+                className="bg-white rounded-2xl shadow p-4 transition hover:shadow-lg"
               >
                 {product.image_url ? (
                   <img
@@ -169,7 +169,7 @@ export default function ArtisanDetailsPage() {
                   )}
                   
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-2xl font-bold text-amber-700">
+                    <span className="text-2xl font-bold text-[#8B6F47]">
                       ${product.price.toFixed(2)}
                     </span>
                     <span className={`text-sm ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -179,9 +179,9 @@ export default function ArtisanDetailsPage() {
                   
                   <Link
                     href={`/products/${product.id}`}
-                    className="block w-full text-center bg-amber-700 text-white px-4 py-2 rounded hover:bg-amber-800 transition"
+                    className="block w-full text-center bg-[#8B6F47] text-white px-4 py-2 rounded hover:bg-[#7a603e] transition-colors"
                   >
-                    View Details
+                    <span className="text-white font-semibold">View Details</span>
                   </Link>
                 </div>
               </div>
@@ -196,7 +196,7 @@ export default function ArtisanDetailsPage() {
           href="/artisans"
           className="inline-flex items-center gap-2 text-amber-700 hover:text-amber-800 font-semibold"
         >
-          <span>←</span> Back to All Artisans
+          <span className="font-bold hover:text-[#7a603e]">← Back to All Artisans</span> 
         </Link>
       </div>
     </div>
