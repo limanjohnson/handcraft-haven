@@ -16,6 +16,10 @@ interface Rating {
 export default function ProductReviews({ productId }: { productId: number }) {
   const [reviews, setReviews] = useState<Rating[]>([])
   const [loading, setLoading] = useState(true)
+  const [newRating, setNewRating] = useState(0);
+  const [newComment, setNewComment] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
 
   useEffect(() => {
     async function fetchReviews() {
@@ -34,6 +38,37 @@ export default function ProductReviews({ productId }: { productId: number }) {
       fetchReviews()
     }
   }, [productId])
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (newRating === 0) return alert("Please select a rating");
+
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/ratings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: 1, // THIS IS TEMPORARY, REPLACE WITH AUTH LOGIC
+          user_name: "John Doe", // THIS IS TEMPORARY, REPLACE WITH AUTH LOGIC
+          product_id: productId,
+          rating: newRating,
+          comment: newComment,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Error submitting review");
+
+      const newReview = await res.json();
+      setReviews([newReview, ...reviews]); // add new review to top
+      setNewRating(0);
+      setNewComment("");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   if (loading) return <p className="text-gray-500">Loading reviews...</p>
 
@@ -64,6 +99,43 @@ export default function ProductReviews({ productId }: { productId: number }) {
           </li>
         ))}
       </ul>
+
+      {/* FORM FOR NEW REVIEWS */}
+      <form onSubmit={handleSubmit} className="mt-6 border-t pt-4">
+        <h4 className="text-lg font-semibold mb-2">Leave a Review</h4>
+
+        <div className="flex items-center gap-2 mb-3">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button
+              key={star}
+              type="button"
+              onClick={() => setNewRating(star)}
+              className={`text-2xl ${
+                newRating >= star ? "text-yellow-500" : "text-gray-400"
+              }`}
+            >
+              ★
+            </button>
+          ))}
+        </div>
+
+        <textarea
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="Write your review..."
+          className="w-full border border-[#D4C5A9] rounded-md p-2 mb-3"
+        />
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="bg-[#8B6F47] text-white px-4 py-2 rounded hover:bg-[#7a603e] transition-colors disabled:opacity-50"
+        >
+          {submitting ? "Submitting..." : "Submit Review"}
+        </button>
+      </form>
     </div>
   )
 }
+
+
