@@ -136,7 +136,7 @@ export default function ArtisansPage() {
         {filteredArtisans.map((artisan) => (
           <div
             key={artisan.id}
-            className="bg-white border rounded-lg p-6 shadow hover:shadow-lg transition"
+            className="bg-white rounded-2xl shadow p-6 transition hover:shadow-lg"
           >
             {/* Artisan Image/Avatar */}
             <div className="flex flex-col items-center mb-4">
@@ -176,9 +176,9 @@ export default function ArtisansPage() {
             {/* Action Button */}
             <Link
               href={`/artisans/${artisan.id}`}
-              className="block w-full text-center bg-amber-700 text-white px-4 py-2 rounded hover:bg-amber-800 transition"
+              className="block w-full text-center bg-[#8B6F47] text-white px-4 py-2 rounded hover:bg-[#7a603e] transition"
             >
-              View Profile
+              <span className="text-white font-semibold">View Profile</span>
             </Link>
           </div>
         ))}

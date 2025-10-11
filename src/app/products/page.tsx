@@ -128,7 +128,7 @@ export default function ProductsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {filteredProducts.map((product) => (
-          <div key={product.id} className="border rounded-lg p-4 shadow hover:shadow-lg transition">
+          <div key={product.id} className="bg-white rounded-2xl shadow p-6 transition hover:shadow-lg">
             {product.image_url ? (
               <img
                 src={product.image_url}
@@ -146,9 +146,9 @@ export default function ProductsPage() {
             {product.artisan_name && <p className="text-sm text-gray-500">By: {product.artisan_name}</p>}
             <a
               href={`/products/${product.id}`}
-              className="inline-block mt-2 bg-amber-700 text-white px-4 py-2 rounded hover:bg-amber-800"
+              className="inline-block mt-2 bg-[#8B6F47] text-white px-4 py-2 rounded hover:bg-[#7a603e] transition-colors"
             >
-              View Details
+              <span className="text-white font-semibold">View Details</span>
             </a>
           </div>
         ))}
