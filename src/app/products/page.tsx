@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import ProductFilter from "@/components/ProductFilter";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import Image from "next/image";
 
 type Product = {
   id: number;
@@ -22,11 +24,16 @@ type FilterOptions = {
   sortBy: "price-asc" | "price-desc" | "name-asc" | "name-desc" | "newest";
 };
 
+const PRODUCTS_PER_PAGE = 12;
+
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [offset, setOffset] = useState(0);
   const [filters, setFilters] = useState<FilterOptions>({
     search: "",
     minPrice: "",
@@ -42,10 +49,12 @@ export default function ProductsPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch("/api/products");
+        const res = await fetch(`/api/products?limit=${PRODUCTS_PER_PAGE}&offset=0`);
         if (!res.ok) throw new Error("Failed to fetch products");
         const data = await res.json();
         setProducts(data.products || []);
+        setHasMore(data.pagination?.hasMore ?? false);
+        setOffset(PRODUCTS_PER_PAGE);
       } catch (err: any) {
         setError(err.message || "An error occurred");
       }
@@ -54,6 +63,26 @@ export default function ProductsPage() {
 
     loadProducts();
   }, []);
+
+  const loadMoreProducts = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
+
+    setLoadingMore(true);
+    try {
+      const res = await fetch(`/api/products?limit=${PRODUCTS_PER_PAGE}&offset=${offset}`);
+      if (!res.ok) throw new Error("Failed to fetch more products");
+      const data = await res.json();
+      
+      setProducts((prev) => [...prev, ...(data.products || [])]);
+      setHasMore(data.pagination?.hasMore ?? false);
+      setOffset((prev) => prev + PRODUCTS_PER_PAGE);
+    } catch (err: any) {
+      console.error("Error loading more products:", err);
+    }
+    setLoadingMore(false);
+  }, [offset, hasMore, loadingMore]);
+
+  const loaderRef = useInfiniteScroll(loadMoreProducts, loadingMore);
 
   // Apply filters and sorting to products
   const filteredProducts = useMemo(() => {
@@ -130,11 +159,16 @@ export default function ProductsPage() {
         {filteredProducts.map((product) => (
           <div key={product.id} className="bg-white rounded-2xl shadow p-6 transition hover:shadow-lg">
             {product.image_url ? (
-              <img
-                src={product.image_url}
-                alt={product.title}
-                className="w-full h-48 object-cover rounded mb-4"
-              />
+              <div className="relative w-full h-48 mb-4">
+                <Image
+                  src={product.image_url}
+                  alt={product.title}
+                  fill
+                  className="object-cover rounded"
+                  loading="lazy"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+                />
+              </div>
             ) : (
               <div className="w-full h-48 bg-gray-200 flex items-center justify-center rounded mb-4">
                 No Image
@@ -153,6 +187,30 @@ export default function ProductsPage() {
           </div>
         ))}
       </div>
+
+      {/* Infinite Scroll Loader */}
+      {!loading && hasMore && (
+        <div 
+          ref={loaderRef}
+          className="flex justify-center items-center py-8"
+        >
+          {loadingMore ? (
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 border-4 border-[#8B6F47] border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-gray-600">Loading more products...</span>
+            </div>
+          ) : (
+            <div className="h-10"></div>
+          )}
+        </div>
+      )}
+
+      {/* End of Products Message */}
+      {!loading && !hasMore && products.length > 0 && (
+        <div className="text-center py-8 text-gray-500">
+          <p>You've reached the end of all products</p>
+        </div>
+      )}
     </div>
   );
 }
