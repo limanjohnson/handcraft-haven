@@ -1,4 +1,4 @@
-//file updated Oct 12//
+// AddToCartButton.tsx
 "use client";
 import { useCart } from "@/context/CartContext";
 
@@ -13,7 +13,7 @@ export default function AddToCartButton({ id, title, price }: AddToCartButtonPro
 
   return (
     <button
-      onClick={() => addItem({ id, title, price, quantity: 1 })}
+      onClick={() => addItem({ id, title, price })} 
       className="mt-3 px-4 py-2 border-2 border-[#8B6F47] rounded-lg text-[#8B6F47] font-semibold transition hover:bg-[#8B6F47] hover:text-white"
     >
       Add to Cart
