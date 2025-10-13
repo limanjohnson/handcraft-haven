@@ -1,9 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
+<<<<<<< HEAD
 import { auth } from '../../auth';
 import AuthButtons, { MobileAuthButtons } from "./AuthButtons";
 import MobileMenuToggle from "./MobileMenuToggle";
 import CartIcon from "./CartIcon";
+=======
+import CartIcon from "@/components/CartIcon"; 
+>>>>>>> d080a4f (Checkout form, Cart Details and Number of Items on cart)
 
 function Logo() {
   return (
@@ -12,7 +16,7 @@ function Logo() {
       alt="Handcrafted Haven Logo"
       width={50}
       height={50}
-      priority 
+      priority
       suppressHydrationWarning
     />
   );
@@ -31,6 +35,7 @@ export default async function Header() {
                     <span className="text-2xl font-bold dark:text-gray-800">Handcrafted Haven</span>
                 </Link>
 
+<<<<<<< HEAD
                 {/* Mobile Menu Toggle */}
                 <MobileMenuToggle session={session} />
 
@@ -75,3 +80,48 @@ export default async function Header() {
         </header>
     );
 }
+=======
+        {/* Hamburguer menu button (mobile) */}
+        <button
+          className="md:hidden text-neutral ml-auto"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle Menu"
+        >
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+
+        {/* Menu Desktop */}
+        <nav className="hidden md:flex md:items-center md:gap-6">
+          <NavigationMenu className="m-4" />
+          
+          {/* Cart Icon */}
+          <CartIcon />
+
+          <Link href="/login">
+            <button className="px-2.5 py-1.5 border-2 border-[#003049] rounded-md bg-white text-[#003049] transition duration-200 hover:bg-[#003049] hover:text-white focus:outline-none focus:bg-[#003049] focus:text-white">
+              Login
+            </button>
+          </Link>
+        </nav>
+      </div>
+
+      {/* Menu Mobile */}
+      {isOpen && (
+        <div className="md:hidden border-t border-highlight" style={{ backgroundColor: '#fff' }}>
+          <NavigationMenu className="flex flex-col gap-4 p-4" />
+          
+          {/* Cart Icon (mobile) */}
+          <div className="p-4 flex items-center gap-4">
+            <CartIcon />
+            <Link href="/login" className="flex-1">
+              <button className="w-full flex justify-center px-4 py-1.5 border-2 border-[#003049] rounded-md bg-white text-[#003049] transition duration-200 hover:bg-[#003049] hover:text-white focus:outline-none focus:bg-[#003049] focus:text-white">
+                Login
+              </button>
+            </Link>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+>>>>>>> d080a4f (Checkout form, Cart Details and Number of Items on cart)
