@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import ProductFilter from "@/components/ProductFilter";
+import AddToCartButton from "@/components/AddToCartButton";
 
 type Product = {
   id: number;
@@ -150,6 +151,12 @@ export default function ProductsPage() {
             >
               <span className="text-white font-semibold">View Details</span>
             </a>
+
+              <AddToCartButton
+                id={product.id}
+                title={product.title}
+                price={product.price}
+              />
           </div>
         ))}
       </div>
