@@ -1,3 +1,4 @@
+//file updated Oct 12//
 "use client";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
