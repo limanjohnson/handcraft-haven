@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+//file updated Oct 12//
+"use client";
+>>>>>>> 6a13270 (Updated files checkout form, cart details and number of items in the cart)
 import Link from "next/link";
 import Image from "next/image";
 <<<<<<< HEAD
