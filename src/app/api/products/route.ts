@@ -61,16 +61,36 @@ export async function GET(request: Request) {
       return NextResponse.json({ product, related });
     }
 
+    // Pagination parameters
+    const limit = parseInt(searchParams.get("limit") || "12", 10);
+    const offset = parseInt(searchParams.get("offset") || "0", 10);
+
+    // Get total count for pagination info
+    const countResult = await query(
+      `SELECT COUNT(*) as total FROM products`
+    );
+    const total = parseInt(countResult.rows[0].total, 10);
+
     const productsResult = await query(
       `SELECT p.*, a.name as artisan_name, a.contact_email as artisan_email
        FROM products p
        LEFT JOIN artisans a ON p.artisan_id = a.id
-       ORDER BY p.created_at DESC`
+       ORDER BY p.created_at DESC
+       LIMIT $1 OFFSET $2`,
+      [limit, offset]
     );
 
     const products = productsResult.rows.map(normalizeProduct);
 
-    return NextResponse.json({ products });
+    return NextResponse.json({ 
+      products,
+      pagination: {
+        total,
+        limit,
+        offset,
+        hasMore: offset + products.length < total
+      }
+    });
   } catch (err) {
     console.error("Error fetching products:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

@@ -47,13 +47,13 @@ export default function ProductFilter({ onFilterChange }: ProductFilterProps) {
   };
 
   return (
-    <div className="bg-gray-900 p-6 rounded-lg shadow-md mb-6">
-      <h2 className="text-xl font-semibold mb-4 text-white">Filter Products</h2>
+    <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
+      <h2 className="text-xl font-semibold mb-4" style={{ color: '#5C4A3A' }}>Filter Products</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Search Input */}
         <div>
-          <label htmlFor="search" className="block text-sm font-medium text-gray-300 mb-1">
+          <label htmlFor="search" className="block text-sm font-medium mb-1" style={{ color: '#5C4A3A' }}>
             Search
           </label>
           <input
@@ -62,13 +62,17 @@ export default function ProductFilter({ onFilterChange }: ProductFilterProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search products..."
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
+            style={{ 
+              color: '#5C4A3A',
+            }}
+            onFocus={(e) => e.target.style.setProperty('--tw-ring-color', '#8B6F47')}
           />
         </div>
 
         {/* Min Price */}
         <div>
-          <label htmlFor="minPrice" className="block text-sm font-medium text-gray-300 mb-1">
+          <label htmlFor="minPrice" className="block text-sm font-medium mb-1" style={{ color: '#5C4A3A' }}>
             Min Price
           </label>
           <input
@@ -78,13 +82,17 @@ export default function ProductFilter({ onFilterChange }: ProductFilterProps) {
             onChange={(e) => setMinPrice(e.target.value)}
             placeholder="$0"
             step="any"
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            style={{ 
+              color: '#5C4A3A',
+            }}
+            onFocus={(e) => e.target.style.setProperty('--tw-ring-color', '#8B6F47')}
           />
         </div>
 
         {/* Max Price */}
         <div>
-          <label htmlFor="maxPrice" className="block text-sm font-medium text-gray-300 mb-1">
+          <label htmlFor="maxPrice" className="block text-sm font-medium mb-1" style={{ color: '#5C4A3A' }}>
             Max Price
           </label>
           <input
@@ -94,20 +102,28 @@ export default function ProductFilter({ onFilterChange }: ProductFilterProps) {
             onChange={(e) => setMaxPrice(e.target.value)}
             placeholder="Any"
             step="any"
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            style={{ 
+              color: '#5C4A3A',
+            }}
+            onFocus={(e) => e.target.style.setProperty('--tw-ring-color', '#8B6F47')}
           />
         </div>
 
         {/* Sort By */}
         <div>
-          <label htmlFor="sortBy" className="block text-sm font-medium text-gray-300 mb-1">
+          <label htmlFor="sortBy" className="block text-sm font-medium mb-1" style={{ color: '#5C4A3A' }}>
             Sort By
           </label>
           <select
             id="sortBy"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as FilterOptions["sortBy"])}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
+            style={{ 
+              color: '#5C4A3A',
+            }}
+            onFocus={(e) => e.target.style.setProperty('--tw-ring-color', '#8B6F47')}
           >
             <option value="newest">Newest First</option>
             <option value="price-asc">Price: Low to High</option>
@@ -125,9 +141,12 @@ export default function ProductFilter({ onFilterChange }: ProductFilterProps) {
             type="checkbox"
             checked={inStock}
             onChange={(e) => setInStock(e.target.checked)}
-            className="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500"
+            className="w-4 h-4 border-gray-300 rounded focus:ring-2"
+            style={{ 
+              accentColor: '#8B6F47',
+            }}
           />
-          <span className="ml-2 text-sm text-gray-300">Show only in-stock items</span>
+          <span className="ml-2 text-sm" style={{ color: '#5C4A3A' }}>Show only in-stock items</span>
         </label>
       </div>
 
@@ -135,13 +154,24 @@ export default function ProductFilter({ onFilterChange }: ProductFilterProps) {
       <div className="flex gap-3 mt-4">
         <button
           onClick={handleApplyFilters}
-          className="px-6 py-2 bg-amber-700 text-white rounded-md hover:bg-amber-800 transition"
+          className="px-6 py-2 text-white rounded-md transition"
+          style={{ 
+            backgroundColor: '#8B6F47',
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#5C4A3A'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#8B6F47'}
         >
           Apply Filters
         </button>
         <button
           onClick={handleReset}
-          className="px-6 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition"
+          className="px-6 py-2 rounded-md transition"
+          style={{ 
+            backgroundColor: '#D4C5A9',
+            color: '#5C4A3A',
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#c4b599'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#D4C5A9'}
         >
           Reset
         </button>

@@ -87,11 +87,11 @@ export default function ArtisansPage() {
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-gray-900 p-6 rounded-lg shadow-md mb-6">
+      <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Search Input */}
           <div>
-            <label htmlFor="search" className="block text-sm font-medium text-gray-300 mb-1">
+            <label htmlFor="search" className="block text-sm font-medium mb-1" style={{ color: '#5C4A3A' }}>
               Search Artisans
             </label>
             <input
@@ -100,20 +100,24 @@ export default function ArtisansPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by name, bio, or email..."
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
+              style={{ color: '#5C4A3A' }}
+              onFocus={(e) => e.target.style.setProperty('--tw-ring-color', '#8B6F47')}
             />
           </div>
 
           {/* Sort By */}
           <div>
-            <label htmlFor="sortBy" className="block text-sm font-medium text-gray-300 mb-1">
+            <label htmlFor="sortBy" className="block text-sm font-medium mb-1" style={{ color: '#5C4A3A' }}>
               Sort By
             </label>
             <select
               id="sortBy"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-              className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
+              style={{ color: '#5C4A3A' }}
+              onFocus={(e) => e.target.style.setProperty('--tw-ring-color', '#8B6F47')}
             >
               <option value="newest">Newest First</option>
               <option value="name">Name (A-Z)</option>
