@@ -3,10 +3,11 @@ import { query } from "../../../../../lib/db";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id, 10);
+    const { id: idParam } = await params;
+    const id = parseInt(idParam, 10);
 
     if (isNaN(id)) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
@@ -30,10 +31,11 @@ export async function DELETE(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id, 10);
+    const { id: idParam } = await params;
+    const id = parseInt(idParam, 10);
 
     if (isNaN(id)) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
