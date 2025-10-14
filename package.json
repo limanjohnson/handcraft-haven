@@ -14,11 +14,7 @@
     "@heroui/navbar": "^2.2.24",
     "@heroui/react": "^2.8.4",
     "@tailwindcss/postcss": "^4.1.13",
-<<<<<<< HEAD
     "bcryptjs": "^2.4.3",
-=======
-    "bcryptjs": "^3.0.2",
->>>>>>> d3fe911be4460e1de2a5f7af7e0030a762b3af6a
     "lucide-react": "^0.544.0",
     "next": "15.5.3",
     "next-auth": "5.0.0-beta.29",
