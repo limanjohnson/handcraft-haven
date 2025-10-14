@@ -1,7 +1,11 @@
 'use client';
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 
-export default function NewProductsForm() {
+type NewProductsFormProps = {
+    onSuccess?: () => void;
+};
+
+export default function NewProductsForm({ onSuccess }: NewProductsFormProps) {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -56,6 +60,11 @@ export default function NewProductsForm() {
             setSuccess('Product created successfully!');
             form.reset();
             setSelectedFile(null);
+            
+            // Call onSuccess callback if provided
+            if (onSuccess) {
+                setTimeout(() => onSuccess(), 1500);
+            }
         } catch (e: any) {
             setError(e.message);
         } finally {
