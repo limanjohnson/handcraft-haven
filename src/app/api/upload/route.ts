@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+
+const s3 = new S3Client({ region: process.env.AWS_REGION });
 
 export async function POST(request: Request) {
   try {
@@ -11,19 +14,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await fs.mkdir(uploadsDir, { recursive: true });
-
-    const name = (file as any).name ?? `upload-${Date.now()}`;
-    const filename = `${Date.now()}-${name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
-    const filePath = path.join(uploadsDir, filename);
-
+    const filename = `${Date.now()}-${file.name}`;
     const buffer = Buffer.from(await file.arrayBuffer());
-    await fs.writeFile(filePath, buffer);
 
-    const imageUrl = `/uploads/${filename}`;
+    await s3.send(
+      new PutObjectCommand({
+        Bucket: process.env.S3_BUCKET,
+        Key: filename,
+        Body: buffer,
+        ContentType: file.type,
+        ACL: "public-read", // optional
+      })
+    );
 
-    return NextResponse.json({ image_url: imageUrl });
+    const url = `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${filename}`;
+    return new Response(JSON.stringify({ url }), { status: 200 });
   } catch (err) {
     console.error("Upload error:", err);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
