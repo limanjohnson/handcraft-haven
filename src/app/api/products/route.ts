@@ -100,13 +100,13 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, description, price, stock, artisanId } = body;
+    const { title, description, price, stock, artisanId, image_url } = body;
 
     const result = await query(
-      `INSERT INTO products (title, description, price, stock, artisan_id)
-       VALUES ($1, $2, $3, $4, $5)
+      `INSERT INTO products (title, description, price, stock, artisan_id, image_url)
+       VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING *`,
-      [title, description, price, stock || 0, artisanId]
+      [title, description, price, stock || 0, artisanId, image_url ?? null]
     );
 
     const product = normalizeProduct(result.rows[0]);
