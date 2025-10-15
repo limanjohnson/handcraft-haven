@@ -4,10 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import ProductReviews from "../../../components/ProductReview";
-
-function handleAddToCart() {
-  alert("Added to cart!");
-}
+import { useCart } from "@/context/CartContext";
 
 type Product = {
   id: number;
@@ -24,12 +21,14 @@ export default function ProductDetailsPage() {
   const params = useParams();
   const productId = params?.id;
   const numericId = Number(productId);
+  const { addToCart } = useCart();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [related, setRelated] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -76,10 +75,19 @@ export default function ProductDetailsPage() {
       <p className="text-gray-500 mb-4">Stock: {product.stock}</p>
 
       <button
-        onClick={handleAddToCart}
+        onClick={() => {
+          addToCart({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            image_url: product.image_url,
+          });
+          setAddedToCart(true);
+          setTimeout(() => setAddedToCart(false), 2000);
+        }}
         className="bg-[#8B6F47] text-white px-6 py-3 rounded-md font-semibold cursor-pointer mt-2 hover:bg-[#7a603e] transition-colors"
       >
-        🛒 Add to Cart
+        {addedToCart ? "✓ Added to Cart!" : "🛒 Add to Cart"}
       </button>
 
       {product.artisan_name && (

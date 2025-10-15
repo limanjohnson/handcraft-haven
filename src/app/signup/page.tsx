@@ -2,8 +2,10 @@ import { Suspense } from "react";
 import { Metadata } from "next";
 import SignupForm from "@/app/ui/signup-form";
 
+// Simple SEO for signup page
 export const metadata: Metadata = {
   title: "Sign Up",
+  description: "Create your Handcraft Haven account to start shopping for unique handmade products.",
 };
 
 export default function SignupPage() {

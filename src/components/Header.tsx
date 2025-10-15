@@ -3,6 +3,7 @@ import Image from "next/image";
 import { auth } from '../../auth';
 import AuthButtons, { MobileAuthButtons } from "./AuthButtons";
 import MobileMenuToggle from "./MobileMenuToggle";
+import CartIcon from "./CartIcon";
 
 function Logo() {
   return (
@@ -53,6 +54,8 @@ export default async function Header() {
                             </Link>
                         )
                     }
+
+                    <CartIcon />
 
                     <AuthButtons session={session} />
                 </nav>

@@ -54,6 +54,13 @@ export default function MobileMenuToggle({ session }: MobileMenuToggleProps) {
                         >
                             Artisans
                         </Link>
+                        <Link
+                            href="/cart"
+                            className="text-gray-700 hover:text-gray-900 transition-colors py-2"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            🛒 Cart
+                        </Link>
                     </nav>
 
                     <MobileAuthButtons session={session} />
