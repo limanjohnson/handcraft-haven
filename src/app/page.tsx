@@ -2,6 +2,13 @@ import styles from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { getFeaturedProducts, getAllArtisans } from "../../lib/repos";
+import type { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  title: "Home",
+  description: "Shop unique handcrafted products from talented artisans. Find handmade jewelry, home decor, pottery, and more.",
+};
 
 export default async function Home() {
   const [products, artisans] = await Promise.all([

@@ -2,8 +2,10 @@ import { Suspense } from "react";
 import { Metadata } from "next";
 import LoginForm from "@/app/ui/login-form";
 
+// Simple SEO for login page
 export const metadata: Metadata = {
   title: "Login",
+  description: "Sign in to your Handcraft Haven account to manage your orders and profile.",
 };
 
 export default function LoginPage() {
