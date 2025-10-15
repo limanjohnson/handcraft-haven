@@ -26,14 +26,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-<<<<<<< HEAD
-<<<<<<< HEAD
     "@types/bcryptjs": "^2.4.6",
-=======
     "@types/next-auth": "^3.13.0",
->>>>>>> 1243583 (checkout form, cart details and number of items in the cart)
-=======
->>>>>>> 330d1cb (Revert "checkout form, cart details and number of items in the cart")
     "@types/node": "^20",
     "@types/pg": "^8.15.5",
     "@types/react": "^19.1.13",
