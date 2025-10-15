@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs/promises';
+import path from 'path';
 import { query } from '../../../../lib/db';
 
 type Artisan = {
@@ -75,5 +77,33 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error('Error fetching artisans:', error);
     return NextResponse.json({ error: 'Error fetching artisans' }, { status: 500 });
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    const formData = await request.formData();
+    const file = formData.get('file') as File | null;
+    
+    if (!file) {
+      return NextResponse.json({ error: 'No file provided' }, {status: 400 });
+    }
+
+    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+    await fs.mkdir(uploadsDir, { recursive: true });
+
+    // timestampt + original name to avoid collisions
+    const filename = `${Date.now()}-${(file as any).name ?? 'upload'}`;
+    const filePath = path.join(uploadsDir, filename);
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+    await fs.writeFile(filePath, buffer);
+
+    const imageUrl = `/uploads/${filename}`;
+
+    return NextResponse.json({ imageUrl});
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    return NextResponse.json({ error: 'upload failed' }, { status: 500 });
   }
 }

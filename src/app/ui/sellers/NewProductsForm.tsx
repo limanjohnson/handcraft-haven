@@ -1,15 +1,37 @@
 'use client';
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 
 type NewProductsFormProps = {
     onSuccess?: () => void;
 };
+
+type Artisan = { id: number; name: string; };
 
 export default function NewProductsForm({ onSuccess }: NewProductsFormProps) {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
+
+    const [artisans, setArtisans] = useState<Artisan[]>([]);
+    const [artisanId, setArtisanId] = useState<number | null>(null);
+
+    useEffect(() => {
+        async function loadArtisans() {
+            try {
+                const res = await fetch('/api/artisans');
+                if (!res.ok) return;
+                const data = await res.json();
+                if (Array.isArray(data.artisans)) {
+                    setArtisans(data.artisans);
+                    if (data.artisans.length > 0) setArtisanId(data.artisans[0].id);
+                }
+            } catch (error) {
+                console.error('Failed to load artisans', error);
+            }
+        }
+        loadArtisans();
+    }, []);
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0] ?? null;
@@ -36,15 +58,42 @@ export default function NewProductsForm({ onSuccess }: NewProductsFormProps) {
             return;
         }
 
-        // Optional: upload image to a host first and set image_url
+        let image_url: string | null = null;
+
+        // If a file was selected, upload it to /api/upload
+        if (selectedFile) {
+            try {
+                const uploadForm = new FormData();
+                uploadForm.append("file", selectedFile, selectedFile.name);
+
+                const uploadRes = await fetch("/api/upload", {
+                    method: "POST",
+                    body: uploadForm,
+                });
+
+                if (!uploadRes.ok) {
+                    const errData = await uploadRes.json().catch(() => ({}));
+                    throw new Error(errData.error || "Image upload failed");
+                }
+
+                const uploadData = await uploadRes.json();
+                image_url = uploadData.image_url ?? null;
+            } catch (e: any) {
+                setError(`Image upload failed: ${e.message || e}`);
+                setLoading(false);
+                return;
+            }
+        }
+
+        // Payload includes image_url returned from upload
         const payload = {
             title,
             description: description || null,
             price,
             stock,
             category: null,
-            image_url: null,
-            artisanId: 1 // TODO: Get from authenticated user
+            image_url,
+            artisanId // TODO: Get from authenticated user
         };
 
         try {
@@ -60,8 +109,9 @@ export default function NewProductsForm({ onSuccess }: NewProductsFormProps) {
             setSuccess('Product created successfully!');
             form.reset();
             setSelectedFile(null);
-            
-            // Call onSuccess callback if provided
+
+            if (artisans.length > 0) setArtisanId(artisans[0].id);
+
             if (onSuccess) {
                 setTimeout(() => onSuccess(), 1500);
             }
@@ -105,6 +155,27 @@ export default function NewProductsForm({ onSuccess }: NewProductsFormProps) {
                             required
                         />
                     </div>
+                    
+                    {/* Artisan select */}
+                    <div className="mb-4">
+                        <label htmlFor="artisan" className="block font-medium mb-2" style={{ color: '#5C4A3A' }}>
+                            Artisan *
+                        </label>
+                        <select
+                            id="artisan"
+                            name="artisan"
+                            value={artisanId ?? ''}
+                            onChange={(e) => setArtisanId(Number(e.target.value))}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                            required
+                        >
+                            {artisans.length === 0 && <option value="">No artisans available</option>}
+                            {artisans.map(a => (
+                                <option key={a.id} value={a.id}>{a.name}</option>
+                            ))}
+                        </select>
+                    </div>
+
                     <div>
                         <label htmlFor="description" className="block font-medium mb-2" style={{ color: '#5C4A3A' }}>
                             Description
