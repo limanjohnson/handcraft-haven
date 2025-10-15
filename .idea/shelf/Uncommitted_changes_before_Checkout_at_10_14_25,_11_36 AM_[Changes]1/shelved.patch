@@ -1,0 +1,19 @@
+Index: src/components/MobileMenuToggle.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\"use client\";\nimport { useState } from \"react\";\nimport { Menu, X } from \"lucide-react\";\nimport Link from \"next/link\";\nimport { MobileAuthButtons } from \"./AuthButtons\";\n\ninterface MobileMenuToggleProps {\n    session: {\n        user: {\n            id: string;\n            name?: string | null;\n            email?: string | null;\n            role: 'buyer' | 'seller' | 'admin';\n        };\n    } | null;\n}\n\nexport default function MobileMenuToggle({ session }: MobileMenuToggleProps) {\n    const [isOpen, setIsOpen] = useState(false);\n\n    return (\n        <>\n            {/* Hamburger Button */}\n            <button\n                className=\"md:hidden text-neutral ml-auto\"\n                onClick={() => setIsOpen(!isOpen)}\n                aria-label=\"Toggle Menu\"\n            >\n                {isOpen ? <X size={28} /> : <Menu size={28} />}\n            </button>\n\n            {/* Mobile Menu */}\n            {isOpen && (\n                <div className=\"fixed inset-0 top-[72px] z-50 md:hidden bg-white border-t border-gray-200\">\n                    <nav className=\"flex flex-col gap-4 p-4\">\n                        <Link\n                            href=\"/\"\n                            className=\"text-gray-700 hover:text-gray-900 transition-colors py-2\"\n                            onClick={() => setIsOpen(false)}\n                        >\n                            Home\n                        </Link>\n                        <Link\n                            href=\"/products\"\n                            className=\"text-gray-700 hover:text-gray-900 transition-colors py-2\"\n                            onClick={() => setIsOpen(false)}\n                        >\n                            Products\n                        </Link>\n                        <Link\n                            href=\"/artisans\"\n                            className=\"text-gray-700 hover:text-gray-900 transition-colors py-2\"\n                            onClick={() => setIsOpen(false)}\n                        >\n                            Artisans\n                        </Link>\n                    </nav>\n\n                    <MobileAuthButtons session={session} />\n                </div>\n            )}\n        </>\n    );\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/components/MobileMenuToggle.tsx b/src/components/MobileMenuToggle.tsx
+--- a/src/components/MobileMenuToggle.tsx	(revision 8e4579ede4813aba67a5fda26d3a9fa9478f048d)
++++ b/src/components/MobileMenuToggle.tsx	(date 1760462341000)
+@@ -10,7 +10,7 @@
+             id: string;
+             name?: string | null;
+             email?: string | null;
+-            role: 'buyer' | 'seller' | 'admin';
++            role?: 'buyer' | 'seller' | 'admin';
+         };
+     } | null;
+ }

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="207c5c10-a3c1-4a70-8384-30bbcf0b4935" name="Changes" comment="Authorization and authentication.&#10;&#10;Seller dashboard will show only if a user is logged in as either a seller or admin">
+      <change afterPath="$PROJECT_DIR$/public/brown-mugs.jpg" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;limanjohnson&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/limanjohnson/handcraft-haven.git&quot;,
+    &quot;accountId&quot;: &quot;5ab24e62-6e46-417d-aa4d-12e4aadb58a2&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="33QWZJvGDGNqEsycY96M4HpmLbj" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "ln/add-product-image",
+    "js.debugger.nextJs.config.created.client": "true",
+    "js.debugger.nextJs.config.created.server": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Volumes/F 1TB/School/handcraft-haven/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.Next.js: server-side">
+    <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
+      <method v="2" />
+    </configuration>
+    <configuration name="Next.js: server-side" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-WS-252.26199.162" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="207c5c10-a3c1-4a70-8384-30bbcf0b4935" name="Changes" comment="" />
+      <created>1759249831758</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1759249831758</updated>
+      <workItem from="1759249832970" duration="6163000" />
+      <workItem from="1759343120107" duration="7805000" />
+      <workItem from="1759443203994" duration="15486000" />
+      <workItem from="1759776368256" duration="5643000" />
+      <workItem from="1759855364723" duration="10592000" />
+      <workItem from="1759945340339" duration="6913000" />
+      <workItem from="1760115198302" duration="3668000" />
+      <workItem from="1760119161148" duration="3057000" />
+      <workItem from="1760124871356" duration="607000" />
+      <workItem from="1760130143725" duration="5525000" />
+      <workItem from="1760373493896" duration="2381000" />
+      <workItem from="1760375886181" duration="1302000" />
+      <workItem from="1760377195084" duration="960000" />
+      <workItem from="1760378160743" duration="1808000" />
+      <workItem from="1760380512017" duration="6591000" />
+      <workItem from="1760454362883" duration="3539000" />
+      <workItem from="1760459364833" duration="4416000" />
+      <workItem from="1760463799931" duration="2934000" />
+      <workItem from="1760543090818" duration="1111000" />
+    </task>
+    <task id="LOCAL-00001" summary="Remove the next and vercel logos and writing on the main page">
+      <option name="closed" value="true" />
+      <created>1759256585905</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1759256585905</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fix new products form">
+      <option name="closed" value="true" />
+      <created>1759256709779</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1759256709779</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Beginning of login form">
+      <option name="closed" value="true" />
+      <created>1759276374337</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1759276374337</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix header">
+      <option name="closed" value="true" />
+      <created>1759445310153</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1759445310153</updated>
+    </task>
+    <task id="LOCAL-00005" summary="header logo update">
+      <option name="closed" value="true" />
+      <created>1759447601973</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1759447601973</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Dark Mode colors and add signup page">
+      <option name="closed" value="true" />
+      <created>1759460610922</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1759460610923</updated>
+    </task>
+    <task id="LOCAL-00007" summary="login and sign up forms">
+      <option name="closed" value="true" />
+      <created>1759855933758</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1759855933758</updated>
+    </task>
+    <task id="LOCAL-00008" summary="login and sign up forms">
+      <option name="closed" value="true" />
+      <created>1759856390388</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1759856390388</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Fixing cursor type. &#10;&#10;A text cursor icon was displaying when selecting items in the navigation menu.">
+      <option name="closed" value="true" />
+      <created>1759861148776</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1759861148776</updated>
+    </task>
+    <task id="LOCAL-00010" summary="update pnpm file">
+      <option name="closed" value="true" />
+      <created>1759861367199</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1759861367199</updated>
+    </task>
+    <task id="LOCAL-00011" summary="update .gitignore file">
+      <option name="closed" value="true" />
+      <created>1759861406252</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1759861406252</updated>
+    </task>
+    <task id="LOCAL-00012" summary="update navigation bar color">
+      <option name="closed" value="true" />
+      <created>1759949832539</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1759949832539</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Authorization and authentication.&#10;&#10;Seller dashboard will show only if a user is logged in as either a seller or admin">
+      <option name="closed" value="true" />
+      <created>1760393931084</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1760393931084</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="javascript:npm:react" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:tailwindcss" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:next" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:postcss" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Remove the next and vercel logos and writing on the main page" />
+    <MESSAGE value="Fix new products form" />
+    <MESSAGE value="Beginning of login form" />
+    <MESSAGE value="fix header" />
+    <MESSAGE value="header logo update" />
+    <MESSAGE value="Dark Mode colors and add signup page" />
+    <MESSAGE value="login and sign up forms" />
+    <MESSAGE value="Fixing cursor type. &#10;&#10;A text cursor icon was displaying when selecting items in the navigation menu." />
+    <MESSAGE value="update pnpm file" />
+    <MESSAGE value="update .gitignore file" />
+    <MESSAGE value="update navigation bar color" />
+    <MESSAGE value="Authorization and authentication.&#10;&#10;Seller dashboard will show only if a user is logged in as either a seller or admin" />
+    <option name="LAST_COMMIT_MESSAGE" value="Authorization and authentication.&#10;&#10;Seller dashboard will show only if a user is logged in as either a seller or admin" />
+  </component>
+</project>
