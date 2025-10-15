@@ -1,56 +1,85 @@
-//file updated Oct 12//
 "use client";
 
+import React, { useState } from "react";
+import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
-<<<<<<< HEAD
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-
-export default function CheckoutPage() {
-  const { cartItems, getTotalPrice, clearCart } = useCart();
-  const router = useRouter();
-
-  // Form data state
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    address: "",
-    city: "",
-    zipCode: "",
-    cardNumber: "",
-  });
-
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  // If cart is empty, redirect to cart page
-  if (cartItems.length === 0) {
-    return (
-      <div className="p-8 max-w-4xl mx-auto text-center">
-        <h1 className="text-3xl font-bold mb-4">Checkout</h1>
-        <p className="text-gray-600 mb-6">Your cart is empty. Add some items before checking out.</p>
-        <Link
-          href="/products"
-          className="inline-block bg-[#8B6F47] text-white px-6 py-3 rounded-md hover:bg-[#7a603e] transition-colors"
-        >
-          Browse Products
-        </Link>
-=======
 import { CreditCard, Play, Smartphone } from "lucide-react"; 
 
 export default function CheckoutPage() {
-  const { items, clearCart } = useCart();
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("credit");
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardExpiry, setCardExpiry] = useState("");
-  const [cardCVC, setCardCVC] = useState("");
+  const { items, totalPrice, clearCart } = useCart();
+
+  const [form, setForm] = useState({
+    name: "",
+    address: "",
+    cardNumber: "",
+    expiry: "",
+    cvc: "",
+    paymentMethod: "credit", // "credit" or "paypal"
+  });
+
+  const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+  const formatCurrency = (amount: number) =>
+    new Intl.NumberFormat("en-MW", {
+      style: "currency",
+      currency: "MWK",
+      minimumFractionDigits: 2,
+    }).format(amount);
+
+  // Luhn Algorithm for card validation
+  const luhnCheck = (cardNumber: string): boolean => {
+    const digits = cardNumber.replace(/\D/g, "");
+    let sum = 0;
+    let double = false;
+
+    for (let i = digits.length - 1; i >= 0; i--) {
+      let d = parseInt(digits[i]);
+      if (double) {
+        d *= 2;
+        if (d > 9) d -= 9;
+      }
+      sum += d;
+      double = !double;
+    }
+
+    return sum % 10 === 0;
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    // Basic validations
+    if (!form.name.trim() || !form.address.trim()) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+
+    if (form.paymentMethod === "credit") {
+      const digits = form.cardNumber.replace(/\s+/g, "");
+      if (!/^\d{13,19}$/.test(digits) || !luhnCheck(digits)) {
+        setError("Invalid card number. Please check again.");
+        return;
+      }
+      if (!/^\d{3,4}$/.test(form.cvc)) {
+        setError("Invalid CVC.");
+        return;
+      }
+      if (!/^(0[1-9]|1[0-2])\/\d{2,4}$/.test(form.expiry)) {
+        setError("Invalid expiry date. Use MM/YY format.");
+        return;
+      }
+    }
+
+    // simulate payment
     setSuccess(true);
     clearCart();
   };
@@ -62,422 +91,137 @@ export default function CheckoutPage() {
           Purchase completed successfully! 🎉
         </h2>
         <p>Thank you for shopping with us!</p>
->>>>>>> d080a4f (Checkout form, Cart Details and Number of Items on cart)
       </div>
     );
   }
 
-<<<<<<< HEAD
-  // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Simple validation
-    if (!formData.fullName || !formData.email || !formData.address || !formData.city || !formData.zipCode) {
-      alert("Please fill in all required fields!");
-      return;
-    }
-
-    // Simulate order processing
-    setIsProcessing(true);
-
-    setTimeout(() => {
-      // Create order data to pass to confirmation
-      const orderData = {
-        items: cartItems,
-        total: getTotalPrice(),
-        customer: formData,
-        orderNumber: Math.floor(100000 + Math.random() * 900000).toString(),
-        date: new Date().toLocaleDateString(),
-      };
-
-      // Store order in localStorage for confirmation page
-      localStorage.setItem("lastOrder", JSON.stringify(orderData));
-
-      // Clear cart
-      clearCart();
-
-      // Redirect to confirmation
-      router.push("/checkout/confirmation");
-    }, 1500);
-  };
-
-  return (
-    <div className="p-8 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Checkout</h1>
-
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Left Column - Checkout Form */}
-        <div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">Shipping Information</h2>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Full Name */}
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Full Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#8B6F47]"
-                  required
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#8B6F47]"
-                  required
-                />
-              </div>
-
-              {/* Address */}
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Street Address <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#8B6F47]"
-                  required
-                />
-              </div>
-
-              {/* City and Zip Code */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    City <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#8B6F47]"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    Zip Code <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="zipCode"
-                    value={formData.zipCode}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#8B6F47]"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Card Number (mock - not real payment) */}
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Card Number (Demo - any number works)
-                </label>
-                <input
-                  type="text"
-                  name="cardNumber"
-                  value={formData.cardNumber}
-                  onChange={handleChange}
-                  placeholder="1234 5678 9012 3456"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#8B6F47]"
-                />
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isProcessing}
-                className="w-full bg-[#8B6F47] hover:bg-[#7a603e] text-white px-6 py-3 rounded-md font-semibold transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-              >
-                {isProcessing ? "Processing Order..." : "Place Order"}
-              </button>
-
-              <Link
-                href="/cart"
-                className="block text-center text-[#8B6F47] hover:underline mt-2"
-              >
-                Back to Cart
-              </Link>
-            </form>
-          </div>
-        </div>
-
-        {/* Right Column - Order Summary */}
-        <div>
-          <div className="bg-white rounded-lg shadow p-6 sticky top-8">
-            <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-
-            {/* Cart Items */}
-            <div className="space-y-3 mb-4 max-h-96 overflow-y-auto">
-              {cartItems.map((item) => (
-                <div key={item.id} className="flex gap-3 pb-3 border-b">
-                  <div className="w-16 h-16 flex-shrink-0">
-                    {item.image_url ? (
-                      <Image
-                        src={item.image_url}
-                        alt={item.title}
-                        width={64}
-                        height={64}
-                        className="w-full h-full object-cover rounded"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-200 rounded"></div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-medium text-sm">{item.title}</h3>
-                    <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
-                    <p className="text-sm font-semibold">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Totals */}
-            <div className="space-y-2 pt-4 border-t">
-              <div className="flex justify-between text-sm">
-                <span>Subtotal:</span>
-                <span>${getTotalPrice().toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>Shipping:</span>
-                <span className="text-green-600">FREE</span>
-              </div>
-              <div className="flex justify-between text-lg font-bold pt-2 border-t">
-                <span>Total:</span>
-                <span className="text-[#8B6F47]">${getTotalPrice().toFixed(2)}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-=======
   const total = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
   return (
-    <div className="p-6 max-w-2xl mx-auto space-y-8">
-      <h1 className="text-3xl font-bold text-center mb-4">🛍️ Checkout</h1>
+    <main className="max-w-3xl mx-auto p-6 space-y-6">
+      <h1 className="text-3xl font-bold mb-4">Checkout</h1>
 
-      {/* Order Summary */}
-      <div className="border rounded-2xl shadow-sm p-5 bg-white">
-        <h2 className="text-lg font-semibold mb-3 border-b pb-2">Order Summary</h2>
-        {items.length === 0 ? (
-          <p>Your cart is empty.</p>
-        ) : (
-          <ul className="space-y-2">
-            {items.map((item) => (
-              <li key={item.id} className="flex justify-between text-sm text-gray-700">
-                <span>
-                  {item.title} <span className="text-gray-500">x{item.quantity}</span>
-                </span>
-                <span>${(item.price * item.quantity).toFixed(2)}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-        <div className="mt-3 flex justify-between font-bold text-gray-800 border-t pt-2">
-          <span>Total</span>
-          <span>${total.toFixed(2)}</span>
+      <section className="bg-gray-50 rounded-lg p-4 shadow-sm">
+        <h2 className="text-xl font-semibold mb-3">Order Summary</h2>
+        <ul className="divide-y divide-gray-200 mb-4">
+          {items.map((item) => (
+            <li
+              key={item.id}
+              className="flex justify-between py-2 text-gray-700"
+            >
+              <span>
+                {item.title} × {item.quantity}
+              </span>
+              <span>{formatCurrency(item.price * item.quantity)}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="text-right font-semibold text-lg">
+          Total: {formatCurrency(totalPrice)}
         </div>
-      </div>
+      </section>
 
-      {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 border rounded-2xl shadow-sm p-6 bg-white"
+        className="bg-white border rounded-lg p-6 space-y-4 shadow-md"
       >
-        {/* Personal Information */}
+        <h2 className="text-xl font-semibold">Billing Details</h2>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="flex flex-col">
+            <label className="font-medium mb-1">Full Name *</label>
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              required
+              className="border rounded px-3 py-2"
+            />
+          </div>
+          <div className="flex flex-col sm:col-span-2">
+            <label className="font-medium mb-1">Shipping Address *</label>
+            <input
+              type="text"
+              name="address"
+              value={form.address}
+              onChange={handleChange}
+              required
+              className="border rounded px-3 py-2"
+            />
+          </div>
+        </div>
+
         <div>
-          <h2 className="text-lg font-semibold mb-3 border-b pb-2">Customer Information</h2>
-          <div className="space-y-3">
-            <div>
-              <label className="block mb-1 font-medium">Full Name</label>
+          <label className="font-medium mb-2 block">Payment Method</label>
+          <select
+            name="paymentMethod"
+            value={form.paymentMethod}
+            onChange={handleChange}
+            className="border rounded px-3 py-2 w-full"
+          >
+            <option value="credit">Credit / Debit Card</option>
+            <option value="paypal">PayPal</option>
+          </select>
+        </div>
+
+        {form.paymentMethod === "credit" && (
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="flex flex-col sm:col-span-2">
+              <label className="font-medium mb-1">Card Number *</label>
               <input
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                name="cardNumber"
+                value={form.cardNumber}
+                onChange={handleChange}
+                placeholder="1234 5678 9012 3456"
+                className="border rounded px-3 py-2"
                 required
-                className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
               />
             </div>
-            <div>
-              <label className="block mb-1 font-medium">Address</label>
-              <textarea
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
+            <div className="flex flex-col">
+              <label className="font-medium mb-1">Expiry (MM/YY) *</label>
+              <input
+                type="text"
+                name="expiry"
+                value={form.expiry}
+                onChange={handleChange}
+                placeholder="09/27"
+                className="border rounded px-3 py-2"
                 required
-                className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="font-medium mb-1">CVC *</label>
+              <input
+                type="text"
+                name="cvc"
+                value={form.cvc}
+                onChange={handleChange}
+                placeholder="123"
+                className="border rounded px-3 py-2"
+                required
               />
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Payment */}
-        <div>
-          <h2 className="text-lg font-semibold mb-3 border-b pb-2">Payment Method</h2>
-
-          {/* Selection Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-4">
-            <button
-              type="button"
-              onClick={() => setPaymentMethod("credit")}
-              className={`flex-1 border rounded-lg p-3 flex flex-col items-center justify-center transition ${
-                paymentMethod === "credit"
-                  ? "border-green-600 bg-green-50"
-                  : "hover:bg-gray-50"
-              }`}
-            >
-              <CreditCard className="w-6 h-6 mb-1 text-green-600" />
-              <span className="text-sm font-medium">Credit Card</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setPaymentMethod("paypal")}
-              className={`flex-1 border rounded-lg p-3 flex flex-col items-center justify-center transition ${
-                paymentMethod === "paypal"
-                  ? "border-green-600 bg-green-50"
-                  : "hover:bg-gray-50"
-              }`}
-            >
-              <Play className="w-6 h-6 mb-1 text-green-600" />
-              <span className="text-sm font-medium">PayPal</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setPaymentMethod("applepay")}
-              className={`flex-1 border rounded-lg p-3 flex flex-col items-center justify-center transition ${
-                paymentMethod === "applepay"
-                  ? "border-green-600 bg-green-50"
-                  : "hover:bg-gray-50"
-              }`}
-            >
-              <Smartphone className="w-6 h-6 mb-1 text-green-600" />
-              <span className="text-sm font-medium">Apple/Google Pay</span>
-            </button>
+        {error && (
+          <div className="text-red-600 bg-red-50 border border-red-200 rounded p-2 text-sm">
+            {error}
           </div>
+        )}
 
-          
-          {paymentMethod === "credit" && (
-            <div className="space-y-3">
-              <div>
-                <label className="block mb-1 font-medium">Card Number</label>
-                <input
-                  type="text"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, ""))}
-                  placeholder="1234567812345678"
-                  required
-                  maxLength={16}
-                  pattern="\d{16}"
-                  className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
-                />
-              </div>
-              <div className="flex gap-3 flex-col sm:flex-row">
-                <div className="flex-1">
-                  <label className="block mb-1 font-medium">Expiry (MM/YY)</label>
-                  <input
-                    type="text"
-                    value={cardExpiry}
-                    onChange={(e) => setCardExpiry(e.target.value)}
-                    placeholder="MM/YY"
-                    required
-                    maxLength={5}
-                    pattern="(0[1-9]|1[0-2])\/\d{2}"
-                    className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
-                  />
-                </div>
-                <div className="flex-1">
-                  <label className="block mb-1 font-medium">CVC</label>
-                  <input
-                    type="text"
-                    value={cardCVC}
-                    onChange={(e) => setCardCVC(e.target.value.replace(/\D/g, ""))}
-                    placeholder="123"
-                    required
-                    maxLength={3}
-                    pattern="\d{3}"
-                    className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {paymentMethod === "paypal" && (
-            <div className="bg-blue-50 p-4 rounded-lg text-center">
-              <p className="text-blue-700 font-medium mb-2">
-                You will be redirected to PayPal to complete your payment.
-              </p>
-              <button
-                type="button"
-                onClick={() => alert("Payment simulated via PayPal ✅")}
-                className="w-full sm:w-auto px-4 py-2 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition"
-              >
-                Simulate PayPal Payment
-              </button>
-            </div>
-          )}
-
-          {paymentMethod === "applepay" && (
-            <div className="bg-gray-100 p-4 rounded-lg text-center">
-              <p className="text-gray-800 font-medium mb-2">
-                Apple Pay / Google Pay will be used for payment.
-              </p>
-              <button
-                type="button"
-                onClick={() => alert("Payment simulated via Apple/Google Pay ✅")}
-                className="w-full sm:w-auto px-4 py-2 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition"
-              >
-                Simulate Apple/Google Pay
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Confirm Order Button fully responsive */}
         <button
           type="submit"
-          className="w-full sm:w-auto px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg transition"
+          className="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 font-medium mt-2"
         >
-          Confirm Order
+          Confirm & Pay {formatCurrency(totalPrice)}
         </button>
       </form>
->>>>>>> d080a4f (Checkout form, Cart Details and Number of Items on cart)
     </div>
   );
 }
