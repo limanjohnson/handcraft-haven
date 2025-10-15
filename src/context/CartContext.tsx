@@ -1,6 +1,17 @@
 // src/context/CartContext.tsx
 "use client";
+<<<<<<< HEAD
 import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
+=======
+
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+>>>>>>> 0ab31d013cb3aa3c6242908d08dff0de4b0861da
 
 export type CartItem = {
   id: number;
@@ -91,7 +102,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const totalPrice = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
   return (
+<<<<<<< HEAD
     <CartContext.Provider value={{ items, addItem, removeItem, clearCart, totalItems }}>
+=======
+    <CartContext.Provider
+      value={{
+        items,
+        addItem,
+        removeItem,
+        decrementItem,
+        updateQuantity,
+        clearCart,
+        totalItems,
+        totalPrice,
+      }}
+    >
+>>>>>>> 0ab31d013cb3aa3c6242908d08dff0de4b0861da
       {children}
     </CartContext.Provider>
   );
@@ -104,4 +130,7 @@ export function useCart() {
   }
   return context;
 }
+<<<<<<< HEAD
 >>>>>>> 330d1cb (Revert "checkout form, cart details and number of items in the cart")
+=======
+>>>>>>> 0ab31d013cb3aa3c6242908d08dff0de4b0861da

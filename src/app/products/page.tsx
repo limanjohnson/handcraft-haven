@@ -3,6 +3,10 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import ProductFilter from "@/components/ProductFilter";
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+import AddToCartButton from "@/components/AddToCartButton";
+>>>>>>> 0ab31d013cb3aa3c6242908d08dff0de4b0861da
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import Image from "next/image";
 =======

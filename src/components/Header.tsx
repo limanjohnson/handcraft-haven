@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //file updated Oct 12//
 "use client";
 import Link from "next/link";
@@ -5,6 +6,15 @@ import Image from "next/image";
 import CartIcon from "@/components/CartIcon"; 
 import { auth } from '../../auth';
 import AuthButtons, { MobileAuthButtons } from "./AuthButtons";
+=======
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import CartIcon from "@/components/CartIcon";
+// import { auth } from "../../auth"; // ❌ comment out if next-auth not installed
+import AuthButtons from "./AuthButtons";
+>>>>>>> 0ab31d013cb3aa3c6242908d08dff0de4b0861da
 import MobileMenuToggle from "./MobileMenuToggle";
 import CartIcon from "./CartIcon";
 =======
@@ -44,6 +54,7 @@ export default function Header() {
           </span>
         </Link>
 
+<<<<<<< HEAD
         {/* Hamburguer menu button (mobile) */}
         <button
           className="md:hidden text-neutral ml-auto"
@@ -85,31 +96,55 @@ export default function Header() {
 }
                 {/* Mobile Menu Toggle */}
                 <MobileMenuToggle session={session} />
+=======
+        {/* Mobile menu toggle */}
+        <MobileMenuToggle session={session} />
+>>>>>>> 0ab31d013cb3aa3c6242908d08dff0de4b0861da
 
-                {/* Desktop Menu */}
-                <nav className="hidden md:flex md:items-center md:gap-6">
-                    <Link href="/" className="text-gray-700 hover:text-gray-900 transition-colors">
-                        Home
-                    </Link>
-                    <Link href="/products" className="text-gray-700 hover:text-gray-900 transition-colors">
-                        Products
-                    </Link>
-                    <Link href="/artisans" className="text-gray-700 hover:text-gray-900 transition-colors">
-                        Artisans
-                    </Link>
+        {/* Desktop navigation */}
+        <nav className="hidden md:flex md:items-center md:gap-6">
+          <Link
+            href="/"
+            className="text-gray-700 hover:text-gray-900 transition-colors"
+          >
+            Home
+          </Link>
+          <Link
+            href="/products"
+            className="text-gray-700 hover:text-gray-900 transition-colors"
+          >
+            Products
+          </Link>
+          <Link
+            href="/artisans"
+            className="text-gray-700 hover:text-gray-900 transition-colors"
+          >
+            Artisans
+          </Link>
 
-                    {/* Seller Dashboard. Visible only to users with the role seller or admin */}
-                    {
-                        (userRole === 'seller' || userRole === 'admin') && (
-                            <Link href='/sellers' className="text-gray-700 hover:text-gray-900 transition-colors">
-                                Seller Dashboard
-                            </Link>
-                        )
-                    }
+          {/* Seller Dashboard visible only for sellers/admins */}
+          {(userRole === "seller" || userRole === "admin") && (
+            <Link
+              href="/sellers"
+              className="text-gray-700 hover:text-gray-900 transition-colors"
+            >
+              Seller Dashboard
+            </Link>
+          )}
 
+<<<<<<< HEAD
                     <AuthButtons session={session} />
                 </nav>
             </div>
         </header>
     );
+=======
+          {/* Cart and Auth buttons */}
+          <CartIcon />
+          <AuthButtons session={session} />
+        </nav>
+      </div>
+    </header>
+  );
+>>>>>>> 0ab31d013cb3aa3c6242908d08dff0de4b0861da
 }

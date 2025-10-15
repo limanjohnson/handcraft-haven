@@ -2,12 +2,6 @@ import "./globals.css";
 import { Roboto } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-<<<<<<< HEAD
-import { CartProvider } from "@/context/CartContext";
-import type { Metadata } from "next";
-=======
-import { CartProvider } from "@/context/CartContext"; 
->>>>>>> d080a4f (Checkout form, Cart Details and Number of Items on cart)
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -45,21 +39,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-<<<<<<< HEAD
       <body className={`${roboto.className} flex flex-col min-h-screen bg-gray-300`} suppressHydrationWarning>
-=======
+        <Header />
+        <main className="flex-1">{children}</main>
 
-      <body
-        className={`${roboto.className} flex flex-col min-h-screen bg-gray-300`}
-        suppressHydrationWarning
-      >
-        
->>>>>>> d080a4f (Checkout form, Cart Details and Number of Items on cart)
-        <CartProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </CartProvider>
+        <Footer />
       </body>
     </html>
   );
