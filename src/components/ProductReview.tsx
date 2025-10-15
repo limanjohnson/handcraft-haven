@@ -1,47 +1,45 @@
-
-'use client'
+'use client';
 import { useSession } from "next-auth/react";
-
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 interface Rating {
-  id: number
-  user_id: number
-  user_name: string
-  product_id: number
-  rating: number
-  comment: string
-  created_at: string
+  id: number;
+  user_id: number;
+  user_name: string;
+  product_id: number;
+  rating: number;
+  comment: string;
+  created_at: string;
 }
 
 export default function ProductReviews({ productId }: { productId: number }) {
-  const [reviews, setReviews] = useState<Rating[]>([])
-  const [loading, setLoading] = useState(true)
+  const [reviews, setReviews] = useState<Rating[]>([]);
+  const [loading, setLoading] = useState(true);
   const [newRating, setNewRating] = useState(0);
   const [newComment, setNewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
   const { data: session } = useSession();
   const user = session?.user;
 
-
+  // Fetch reviews when component mounts or productId changes
   useEffect(() => {
     async function fetchReviews() {
       try {
-        const res = await fetch(`/api/ratings?product_id=${productId}`)
-        const data = await res.json()
-        setReviews(data)
+        const res = await fetch(`/api/ratings?product_id=${productId}`);
+        const data = await res.json();
+        setReviews(data);
       } catch (error) {
-        console.error('Error fetching reviews:', error)
+        console.error('Error fetching reviews:', error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    if (productId) {
-      fetchReviews()
-    }
-  }, [productId])
+    if (productId) fetchReviews();
+  }, [productId]);
 
+  // Handle submitting a new review
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!user) return alert("Please log in to leave a review");
@@ -53,8 +51,7 @@ export default function ProductReviews({ productId }: { productId: number }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          user_id: user.id, // THIS IS TEMPORARY, REPLACE WITH AUTH LOGIC
-          user_name: user.name, // THIS IS TEMPORARY, REPLACE WITH AUTH LOGIC
+          user_id: user.id,
           product_id: productId,
           rating: newRating,
           comment: newComment,
@@ -64,7 +61,14 @@ export default function ProductReviews({ productId }: { productId: number }) {
       if (!res.ok) throw new Error("Error submitting review");
 
       const newReview = await res.json();
-      setReviews([newReview, ...reviews]); // add new review to top
+
+      // Añade user_name desde sesión para mostrar inmediatamente
+      const newReviewWithName: Rating = {
+        ...newReview,
+        user_name: user.name || "Unknown",
+      };
+
+      setReviews([newReviewWithName, ...reviews]);
       setNewRating(0);
       setNewComment("");
     } catch (err) {
@@ -74,64 +78,21 @@ export default function ProductReviews({ productId }: { productId: number }) {
     }
   }
 
-  if (loading) return <p className="text-gray-500">Loading reviews...</p>
-
-  if (reviews.length === 0)
-    return <div>
-      <div className="bg-white rounded-2xl shadow p-6 transition">
-        <p className="text-gray-600">No reviews yet for this product.</p>
-      </div>
-    {/* FORM FOR NEW REVIEWS */}
-    {user ? (
-      <form onSubmit={handleSubmit} className="mt-6 pt-4">
-        <h4 className="text-lg font-semibold mb-2">Leave a Review</h4>
-
-        <div className="flex items-center gap-2 mb-3">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <button
-              key={star}
-              type="button"
-              onClick={() => setNewRating(star)}
-              className={`text-2xl ${
-                newRating >= star ? "text-yellow-500" : "text-gray-400"
-              }`}
-            >
-              ★
-            </button>
-          ))}
-        </div>
-
-        <textarea
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Write your review..."
-          className="w-full border border-[#D4C5A9] rounded-md p-2 mb-3"
-        />
-
-        <button
-          type="submit"
-          disabled={submitting}
-          className="bg-[#8B6F47] text-white px-4 py-2 rounded hover:bg-[#7a603e] transition-colors disabled:opacity-50"
-        >
-          {submitting ? "Submitting..." : "Submit Review"}
-        </button>
-      </form>
-      ) : (
-      <p className="text-gray-600 mt-4">
-        Please <a href="/login" className="text-[#8B6F47] font-medium underline">log in</a> to leave a review.
-      </p>
-    )}
-    </div>;
+  if (loading) return <p className="text-gray-500">Loading reviews...</p>;
 
   return (
     <div className="mt-6">
       <h3 className="text-xl font-semibold mb-3">Customer Reviews</h3>
+
+      {reviews.length === 0 && (
+        <div className="bg-white rounded-2xl shadow p-6 transition mb-6">
+          <p className="text-gray-600">No reviews yet for this product.</p>
+        </div>
+      )}
+
       <ul className="space-y-4">
         {reviews.map((r) => (
-          <li
-            key={r.id}
-            className="bg-white rounded-2xl shadow p-4 transition"
-          >
+          <li key={r.id} className="bg-white rounded-2xl shadow p-4 transition">
             <div className="flex justify-between items-center mb-2">
               <span className="font-medium text-gray-800">{r.user_name}</span>
               <span className="text-yellow-500">
@@ -146,42 +107,44 @@ export default function ProductReviews({ productId }: { productId: number }) {
         ))}
       </ul>
 
-      {/* FORM FOR NEW REVIEWS */}
-      <form onSubmit={handleSubmit} className="mt-6 pt-4">
-        <h4 className="text-lg font-semibold mb-2">Leave a Review</h4>
+      {/* Form for new reviews */}
+      {user ? (
+        <form onSubmit={handleSubmit} className="mt-6 pt-4">
+          <h4 className="text-lg font-semibold mb-2">Leave a Review</h4>
 
-        <div className="flex items-center gap-2 mb-3">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <button
-              key={star}
-              type="button"
-              onClick={() => setNewRating(star)}
-              className={`text-2xl ${
-                newRating >= star ? "text-yellow-500" : "text-gray-400"
-              }`}
-            >
-              ★
-            </button>
-          ))}
-        </div>
+          <div className="flex items-center gap-2 mb-3">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                type="button"
+                onClick={() => setNewRating(star)}
+                className={`text-2xl ${newRating >= star ? "text-yellow-500" : "text-gray-400"}`}
+              >
+                ★
+              </button>
+            ))}
+          </div>
 
-        <textarea
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Write your review..."
-          className="w-full border border-[#D4C5A9] rounded-md p-2 mb-3"
-        />
+          <textarea
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="Write your review..."
+            className="w-full border border-[#D4C5A9] rounded-md p-2 mb-3"
+          />
 
-        <button
-          type="submit"
-          disabled={submitting}
-          className="bg-[#8B6F47] text-white px-4 py-2 rounded hover:bg-[#7a603e] transition-colors disabled:opacity-50"
-        >
-          {submitting ? "Submitting..." : "Submit Review"}
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="bg-[#8B6F47] text-white px-4 py-2 rounded hover:bg-[#7a603e] transition-colors disabled:opacity-50"
+          >
+            {submitting ? "Submitting..." : "Submit Review"}
+          </button>
+        </form>
+      ) : (
+        <p className="text-gray-600 mt-4">
+          Please <a href="/login" className="text-[#8B6F47] font-medium underline">log in</a> to leave a review.
+        </p>
+      )}
     </div>
-  )
+  );
 }
-
-

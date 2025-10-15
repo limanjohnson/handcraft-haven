@@ -47,6 +47,7 @@ export async function POST(request: Request) {
 
     // validation
     if (!user_id || !product_id || !rating) {
+      console.warn("Missing required fields:", { user_id, product_id, rating });
       return NextResponse.json(
         { error: "user_id, product_id y rating son requeridos" },
         { status: 400 }
@@ -56,14 +57,16 @@ export async function POST(request: Request) {
     // insert into the database
     const result = await query(
       `INSERT INTO ratings (user_id, product_id, rating, comment)
-       VALUES ($1, $2, $3, $4)
-       RETURNING *`,
+        VALUES ($1, $2, $3, $4)
+        ON CONFLICT (user_id, product_id)
+        DO UPDATE SET rating = EXCLUDED.rating, comment = EXCLUDED.comment, created_at = NOW()
+        RETURNING id, user_id, product_id, rating, comment, created_at`,
       [user_id, product_id, rating, comment || null]
     );
 
     return NextResponse.json(result.rows[0], { status: 201 });
-  } catch (error) {
-    console.error("Error creating rating:", error);
+  } catch (error: any) {
+    console.error("Error creating rating:", error.message || error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
