@@ -16,6 +16,7 @@ interface MobileMenuToggleProps {
 }
 
 export default function MobileMenuToggle({ session }: MobileMenuToggleProps) {
+
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -54,6 +55,18 @@ export default function MobileMenuToggle({ session }: MobileMenuToggleProps) {
                         >
                             Artisans
                         </Link>
+
+                        {/* Seller Dashboard - visible to seller & admin on mobile */}
+                        {(session?.user?.role === 'seller' || session?.user?.role === 'admin') && (
+                            <Link
+                                href="/sellers"
+                                className="text-gray-700 hover:text-gray-900 transition-colors py-2"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                Seller Dashboard
+                            </Link>
+                        )}
+
                         <Link
                             href="/cart"
                             className="text-gray-700 hover:text-gray-900 transition-colors py-2"
