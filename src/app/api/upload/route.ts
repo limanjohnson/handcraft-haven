@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
+import { UTApi, UploadThingError } from "uploadthing/server";
 
 export async function POST(request: Request) {
   try {
@@ -8,24 +7,26 @@ export async function POST(request: Request) {
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+      return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await fs.mkdir(uploadsDir, { recursive: true });
+    // New v7+ usage: reads UPLOADTHING_TOKEN automatically
+    const utApi = new UTApi();
 
-    const name = (file as any).name ?? `upload-${Date.now()}`;
-    const filename = `${Date.now()}-${name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
-    const filePath = path.join(uploadsDir, filename);
+    const uploadResponse = await utApi.uploadFiles([file]);
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await fs.writeFile(filePath, buffer);
+    if (!uploadResponse || !uploadResponse[0]?.data?.url) {
+      throw new UploadThingError("Failed to upload file");
+    }
 
-    const imageUrl = `/uploads/${filename}`;
+    const fileUrl = uploadResponse[0].data.url;
 
-    return NextResponse.json({ image_url: imageUrl });
-  } catch (err) {
-    console.error("Upload error:", err);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    return NextResponse.json({ image_url: fileUrl });
+  } catch (error: any) {
+    console.error("Upload error:", error);
+    return NextResponse.json(
+      { error: error.message || "Upload failed" },
+      { status: 500 }
+    );
   }
 }

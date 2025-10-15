@@ -1,0 +1,94 @@
+Index: src/app/layout.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import \"./globals.css\";\nimport { Roboto } from \"next/font/google\";\nimport Header from \"@/components/Header\";\nimport Footer from \"@/components/Footer\";\nimport { CartProvider } from \"@/context/CartContext\"; \n\nconst roboto = Roboto({\n  subsets: [\"latin\"],\n  weight: [\"400\", \"500\", \"700\"],\n});\n\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <html lang=\"pt\" suppressHydrationWarning>\n      <head>\n        <script\n          dangerouslySetInnerHTML={{\n            __html: `\n              // Suppress hydration warnings in development\n              if (typeof window !== 'undefined') {\n                const originalError = console.error;\n                console.error = (...args) => {\n                  if (args[0]?.includes?.('Hydration') || args[0]?.includes?.('hydration')) {\n                    return;\n                  }\n                  originalError.apply(console, args);\n                };\n              }\n            `,\n          }}\n        />\n      </head>\n\n      <body\n        className={`${roboto.className} flex flex-col min-h-screen bg-gray-300`}\n        suppressHydrationWarning\n      >\n        \n        <CartProvider>\n          <Header />\n          <main className=\"flex-1\">{children}</main>\n          <Footer />\n        </CartProvider>\n      </body>\n    </html>\n  );\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+--- a/src/app/layout.tsx	(revision 8e4579ede4813aba67a5fda26d3a9fa9478f048d)
++++ b/src/app/layout.tsx	(date 1760461513000)
+@@ -1,6 +1,6 @@
+ import "./globals.css";
+ import { Roboto } from "next/font/google";
+-import Header from "@/components/Header";
++import HeaderServer from "@/components/Header";
+ import Footer from "@/components/Footer";
+ import { CartProvider } from "@/context/CartContext"; 
+ 
+@@ -35,9 +35,9 @@
+         className={`${roboto.className} flex flex-col min-h-screen bg-gray-300`}
+         suppressHydrationWarning
+       >
+-        
++
+         <CartProvider>
+-          <Header />
++          <HeaderServer />
+           <main className="flex-1">{children}</main>
+           <Footer />
+         </CartProvider>
+Index: src/components/Header.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\"use client\";\nimport Link from \"next/link\";\nimport Image from \"next/image\";\nimport CartIcon from \"@/components/CartIcon\";\nimport { auth } from '../../auth';\nimport AuthButtons, { MobileAuthButtons } from \"./AuthButtons\";\nimport MobileMenuToggle from \"./MobileMenuToggle\";\n\nfunction Logo() {\n  return (\n    <Image\n      src=\"/logo.png\"\n      alt=\"Handcrafted Haven Logo\"\n      width={50}\n      height={50}\n      priority\n      suppressHydrationWarning\n    />\n  );\n}\n\nexport default async function Header() {\n    const session = await auth();\n    const userRole = session?.user?.role;\n\n    return (\n        <header className=\"bg-white\">\n            <div className=\"flex items-center justify-between p-4\">\n                {/* Logo + Name */}\n                <Link href=\"/\" className=\"flex items-center gap-2 bg-white p-2 rounded-md\">\n                    <Logo />\n                    <span className=\"text-2xl font-bold dark:text-gray-800\">Handcrafted Haven</span>\n                </Link>\n\n                {/* Mobile Menu Toggle */}\n                <MobileMenuToggle session={session} />\n\n                {/* Desktop Menu */}\n                <nav className=\"hidden md:flex md:items-center md:gap-6\">\n                    <Link href=\"/\" className=\"text-gray-700 hover:text-gray-900 transition-colors\">\n                        Home\n                    </Link>\n                    <Link href=\"/products\" className=\"text-gray-700 hover:text-gray-900 transition-colors\">\n                        Products\n                    </Link>\n                    <Link href=\"/artisans\" className=\"text-gray-700 hover:text-gray-900 transition-colors\">\n                        Artisans\n                    </Link>\n\n                    {/* Seller Dashboard. Visible only to users with the role seller or admin */}\n                    {\n                        (userRole === 'seller' || userRole === 'admin') && (\n                            <Link href='/sellers' className=\"text-gray-700 hover:text-gray-900 transition-colors\">\n                                Seller Dashboard\n                            </Link>\n                        )\n                    }\n\n                    <CartIcon />\n\n                    <AuthButtons session={session} />\n                </nav>\n            </div>\n        </header>\n    );\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/components/Header.tsx b/src/components/Header.tsx
+--- a/src/components/Header.tsx	(revision 8e4579ede4813aba67a5fda26d3a9fa9478f048d)
++++ b/src/components/Header.tsx	(date 1760462227000)
+@@ -1,8 +1,8 @@
+ "use client";
++
+ import Link from "next/link";
+ import Image from "next/image";
+ import CartIcon from "@/components/CartIcon";
+-import { auth } from '../../auth';
+ import AuthButtons, { MobileAuthButtons } from "./AuthButtons";
+ import MobileMenuToggle from "./MobileMenuToggle";
+ 
+@@ -19,8 +19,26 @@
+   );
+ }
+ 
+-export default async function Header() {
+-    const session = await auth();
++export interface SessionUser {
++    session: {
++        user?: {
++            id?: string;
++            name?: string | null;
++            email?: string | null;
++            role?: "buyer" | "seller" | "admin";
++        }
++    } | null;
++}
++
++export interface Session {
++    user?: SessionUser | null;
++}
++
++interface HeaderProps {
++    session: Session | null
++}
++
++export default function Header({ session }: HeaderProps) {
+     const userRole = session?.user?.role;
+ 
+     return (
+Index: src/components/HeaderServer.tsx
+===================================================================
+diff --git a/src/components/HeaderServer.tsx b/src/components/HeaderServer.tsx
+new file mode 100644
+--- /dev/null	(date 1760461179000)
++++ b/src/components/HeaderServer.tsx	(date 1760461179000)
+@@ -0,0 +1,7 @@
++import { auth } from "../../auth";
++import Header from "./Header";
++
++export default async function HeaderServer() {
++    const session = await auth(); // safe here, runs only on the server
++    return <Header session={session} />;
++}
+\ No newline at end of file

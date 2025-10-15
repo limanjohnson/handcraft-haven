@@ -1,0 +1,32 @@
+Index: src/app/lib/actions.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/app/lib/actions.ts b/src/app/lib/actions.ts
+new file mode 100644
+--- /dev/null	(date 1759343158000)
++++ b/src/app/lib/actions.ts	(date 1759343158000)
+@@ -0,0 +1,7 @@
++'use server';
++
++import { z } from 'zod';
++import { revalidatePath} from "next/cache";
++import { redirect} from "next/navigation";
++import { signIn } from '@/auth';
++import { AuthError } from 'next-auth';
+\ No newline at end of file
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>node_modules\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.gitignore b/.gitignore
+--- a/.gitignore	(revision 0b3e230d3f05e5ec1345d026d755fb9aefa2a1f3)
++++ b/.gitignore	(date 1759343158000)
+@@ -1,1 +1,2 @@
+ node_modules
++.next
+\ No newline at end of file
