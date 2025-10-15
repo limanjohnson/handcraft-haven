@@ -36,21 +36,33 @@ export default async function Header() {
 
                 {/* Desktop Menu */}
                 <nav className="hidden md:flex md:items-center md:gap-6">
-                    <Link href="/" className="text-gray-700 hover:text-gray-900 transition-colors">
-                        Home
+                    <Link href="/">  <span className="relative text-gray-700 hover:text-gray-900
+                            after:absolute after:left-1/2 after:bottom-0 after:h-0.5 after:w-0
+                            after:bg-[#7a603e] after:transition-all after:duration-300
+                            hover:after:left-0 hover:after:w-full">
+                        Home</span>
                     </Link>
-                    <Link href="/products" className="text-gray-700 hover:text-gray-900 transition-colors">
-                        Products
+                    <Link href="/products"> <span className="relative text-gray-700 hover:text-gray-900
+                            after:absolute after:left-1/2 after:bottom-0 after:h-0.5 after:w-0
+                            after:bg-[#7a603e] after:transition-all after:duration-300
+                            hover:after:left-0 hover:after:w-full">
+                        Products</span>
                     </Link>
-                    <Link href="/artisans" className="text-gray-700 hover:text-gray-900 transition-colors">
-                        Artisans
+                    <Link href="/artisans"><span className="relative text-gray-700 hover:text-gray-900
+                            after:absolute after:left-1/2 after:bottom-0 after:h-0.5 after:w-0
+                            after:bg-[#7a603e] after:transition-all after:duration-300
+                            hover:after:left-0 hover:after:w-full">
+                        Artisans</span>
                     </Link>
 
                     {/* Seller Dashboard. Visible only to users with the role seller or admin */}
                     {
                         (userRole === 'seller' || userRole === 'admin') && (
-                            <Link href='/sellers' className="text-gray-700 hover:text-gray-900 transition-colors">
-                                Seller Dashboard
+                            <Link href='/sellers'><span className="relative text-gray-700 hover:text-gray-900
+                            after:absolute after:left-1/2 after:bottom-0 after:h-0.5 after:w-0
+                            after:bg-[#7a603e] after:transition-all after:duration-300
+                            hover:after:left-0 hover:after:w-full">
+                                Seller Dashboard </span>
                             </Link>
                         )
                     }

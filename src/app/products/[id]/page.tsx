@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import ProductReviews from "../../../components/ProductReview";
+import ProductReviewsWrapper from '../../../components/ProductReviewsWrapper';
 import { useCart } from "@/context/CartContext";
 
 type Product = {
@@ -97,7 +97,7 @@ export default function ProductDetailsPage() {
         </div>
       )}
 
-      <ProductReviews productId={numericId} />
+      <ProductReviewsWrapper productId={numericId} />
 
       {related.length > 0 && (
         <div className="mt-8">

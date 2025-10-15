@@ -1,5 +1,6 @@
 
 'use client'
+import { useSession } from "next-auth/react";
 
 import { useEffect, useState } from 'react'
 
@@ -19,6 +20,8 @@ export default function ProductReviews({ productId }: { productId: number }) {
   const [newRating, setNewRating] = useState(0);
   const [newComment, setNewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const { data: session } = useSession();
+  const user = session?.user;
 
 
   useEffect(() => {
@@ -41,6 +44,7 @@ export default function ProductReviews({ productId }: { productId: number }) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!user) return alert("Please log in to leave a review");
     if (newRating === 0) return alert("Please select a rating");
 
     setSubmitting(true);
@@ -49,8 +53,8 @@ export default function ProductReviews({ productId }: { productId: number }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          user_id: 1, // THIS IS TEMPORARY, REPLACE WITH AUTH LOGIC
-          user_name: "John Doe", // THIS IS TEMPORARY, REPLACE WITH AUTH LOGIC
+          user_id: user.id, // THIS IS TEMPORARY, REPLACE WITH AUTH LOGIC
+          user_name: user.name, // THIS IS TEMPORARY, REPLACE WITH AUTH LOGIC
           product_id: productId,
           rating: newRating,
           comment: newComment,
@@ -78,6 +82,7 @@ export default function ProductReviews({ productId }: { productId: number }) {
         <p className="text-gray-600">No reviews yet for this product.</p>
       </div>
     {/* FORM FOR NEW REVIEWS */}
+    {user ? (
       <form onSubmit={handleSubmit} className="mt-6 pt-4">
         <h4 className="text-lg font-semibold mb-2">Leave a Review</h4>
 
@@ -111,6 +116,11 @@ export default function ProductReviews({ productId }: { productId: number }) {
           {submitting ? "Submitting..." : "Submit Review"}
         </button>
       </form>
+      ) : (
+      <p className="text-gray-600 mt-4">
+        Please <a href="/login" className="text-[#8B6F47] font-medium underline">log in</a> to leave a review.
+      </p>
+    )}
     </div>;
 
   return (
