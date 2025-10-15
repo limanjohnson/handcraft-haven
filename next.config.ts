@@ -24,6 +24,21 @@ const nextConfig: NextConfig = {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 2,
   },
+
+  // Tell webpack not to bundle these server-only packages for the client
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Don't bundle pg and related packages on the client side
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        dns: false,
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

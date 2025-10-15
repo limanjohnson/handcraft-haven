@@ -1,10 +1,5 @@
-import NewProductsForm from "../ui/sellers/NewProductsForm";
+import SellersDashboard from '@/components/SellersDashboard';
 
 export default function SellersPage() {
-    return (
-        <div>
-            <h1>Sellers Page</h1>
-            <NewProductsForm />
-        </div>
-    );
+    return <SellersDashboard />;
 }

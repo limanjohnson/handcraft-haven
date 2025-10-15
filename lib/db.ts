@@ -1,3 +1,4 @@
+import 'server-only';
 import { Pool } from "pg";
 
 const connectionString = process.env.POSTGRES_URL;
